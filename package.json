@@ -1,26 +1,62 @@
 {
-  "name": "sheet-stream",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
-  "dependencies": {
-    "react": "^18",
-    "react-dom": "^18",
-    "next": "14.2.1"
-  },
-  "devDependencies": {
-    "typescript": "^5",
-    "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "postcss": "^8",
-    "tailwindcss": "^3.4.1",
-    "eslint": "^8",
-    "eslint-config-next": "14.2.1"
-  }
+    "name": "sheet-stream",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "dev": "env-cmd -f .env next dev",
+        "build": "env-cmd -f .env next build",
+        "playground": "env-cmd -f .env tsx playground.ts",
+        "knex": "env-cmd -f .env tsx node_modules/.bin/knex",
+        "start": "env-cmd -f .env next start",
+        "jobs": "env-cmd -f .env tsx watch src/background/index.ts",
+        "jobs-prod": "NODE_ENV=production tsx src/background/index.ts",
+        "lint": "next lint"
+    },
+    "dependencies": {
+        "@radix-ui/react-icons": "^1.3.0",
+        "@radix-ui/react-label": "^2.0.2",
+        "@radix-ui/react-select": "^2.0.0",
+        "@radix-ui/react-slot": "^1.0.2",
+        "apca-w3": "^0.1.9",
+        "class-variance-authority": "^0.7.0",
+        "clsx": "^2.1.1",
+        "date-fns": "^3",
+        "env-cmd": "^10",
+        "framer-motion": "^11.1.9",
+        "gaxios": "^6",
+        "googleapis": "^134",
+        "knex": "^3.1.0",
+        "lodash-es": "^4",
+        "next": "14.2.1",
+        "pg": "^8.11.5",
+        "react": "^18",
+        "react-dom": "^18",
+        "react-fontpicker-ts": "^0.4.0",
+        "sharp": "^0.33.3",
+        "tailwind-merge": "^2.3.0",
+        "tailwindcss-animate": "^1.0.7",
+        "typeid-js": "^0.7.0",
+        "winston": "^3.13.0",
+        "zod": "^3.22.4"
+    },
+    "devDependencies": {
+        "@tailwindcss/forms": "^0.5.7",
+        "@tailwindcss/typography": "^0.5.12",
+        "@types/apca-w3": "^0.1.3",
+        "@types/node": "^20",
+        "@types/pg": "^8.11.5",
+        "@types/react": "^18",
+        "@types/react-dom": "^18",
+        "@typescript-eslint/eslint-plugin": "^7",
+        "@typescript-eslint/parser": "^7",
+        "eslint": "^8",
+        "eslint-config-google": "^0.14.0",
+        "eslint-config-next": "14.2.1",
+        "eslint-config-prettier": "^9.1.0",
+        "postcss": "^8",
+        "prettier": "^3.2.5",
+        "tailwindcss": "^3.4.1",
+        "tsx": "^4.7.2",
+        "typescript": "^5"
+    }
 }
