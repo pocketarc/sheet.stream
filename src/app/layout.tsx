@@ -18,7 +18,7 @@ const baseUrl = getBaseUrl();
 
 export async function generateMetadata(): Promise<Metadata> {
     const title = `Sheet Stream`;
-    const description = `Display data from a Google Sheet on your Twitch/YouTube/TikTok streams in real-time. Easy setup, customizable, and reliable.`;
+    const description = `Display data from a Google Sheet on your Twitch/YouTube/TikTok streams in real-time. Free, easy to setup, and customizable.`;
 
     return {
         metadataBase: new URL(baseUrl),
