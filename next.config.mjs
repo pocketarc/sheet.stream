@@ -1,20 +1,19 @@
-// import { withSentryConfig } from "@sentry/nextjs";
+import { withSentryConfig } from "@sentry/nextjs";
 
 /** @type {import("next").NextConfig} */
 const nextConfig = {
     output: "standalone",
     reactStrictMode: false,
     experimental: {
-        serverComponentsExternalPackages: ["knex"],
+        serverComponentsExternalPackages: ["knex"]
     },
     images: {
-        dangerouslyAllowSVG: true,
-    },
-}
+        dangerouslyAllowSVG: true
+    }
+};
 
 let exports = nextConfig;
 
-/*
 if (process.env.SENTRY_DSN) {
     exports = withSentryConfig(
         exports,
@@ -23,16 +22,13 @@ if (process.env.SENTRY_DSN) {
             silent: true,
             org: process.env.SENTRY_ORG,
             project: process.env.SENTRY_PROJECT,
-        },
-        {
+            authToken: process.env.SENTRY_AUTH_TOKEN,
             widenClientFileUpload: true,
             transpileClientSDK: false,
             tunnelRoute: "/monitoring",
             hideSourceMaps: true,
-            disableLogger: true,
-        },
+            disableLogger: true
+        }
     );
 }
- */
 
-export default exports;
