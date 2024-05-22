@@ -16,6 +16,7 @@ export default function Hero() {
                         <p className="mt-4">Free, easy to setup, and customizable.</p>
                         <div className="mt-8">
                             <Link
+                                prefetch={false}
                                 className="inline-block truncate px-8 py-3 text-purple-50 font-title text-2xl bg-purple-950 rounded-md border-t-2 border-purple-800"
                                 href="/api/signup"
                             >
