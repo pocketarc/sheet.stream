@@ -1,7 +1,7 @@
 import getKnex from "@/utils/getKnex";
 import type { Cell, Spreadsheet } from "@/app/types";
 import { subSeconds } from "date-fns/subSeconds";
-import { refreshSpreadsheet } from "@/app/utils/refreshSpreadsheet";
+import { refreshSpreadsheet } from "@/utils/refreshSpreadsheet";
 
 const knex = getKnex();
 

@@ -1,6 +1,6 @@
 import type { Cell, Spreadsheet } from "@/app/types";
 import getKnex from "@/utils/getKnex";
-import { getCellValues } from "@/app/utils/getCellValues";
+import { getCellValues } from "@/utils/getCellValues";
 import { logger } from "@/utils/logger";
 
 export async function refreshSpreadsheet(spreadsheet: Spreadsheet, spreadsheetCells: Cell[]): Promise<void> {

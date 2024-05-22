@@ -3,7 +3,7 @@ import getKnex from "@/utils/getKnex";
 import type { Cell, Spreadsheet, ViewCellResponse } from "@/app/types";
 import type { CSSProperties } from "react";
 import { jsToCss } from "@/utils/jsToCss";
-import { refreshSpreadsheet } from "@/app/utils/refreshSpreadsheet";
+import { refreshSpreadsheet } from "@/utils/refreshSpreadsheet";
 import { subSeconds } from "date-fns/subSeconds";
 import { isBefore } from "date-fns/isBefore";
 
