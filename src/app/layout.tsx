@@ -17,18 +17,19 @@ export const viewport: Viewport = {
 const baseUrl = getBaseUrl();
 
 export async function generateMetadata(): Promise<Metadata> {
-    const title = `Sheet Stream`;
+    const title = `sheet.stream`;
     const description = `Display data from a Google Sheet on your Twitch/YouTube/TikTok streams in real-time. Free, easy to setup, and customizable.`;
 
     return {
         metadataBase: new URL(baseUrl),
-        title,
+        title: `${title} - Display data from a Google Sheet on your Twitch/YouTube/TikTok streams in real-time.`,
         description,
         alternates: {
             canonical: baseUrl,
         },
         openGraph: {
             type: "website",
+            url: baseUrl,
         },
         twitter: {
             card: "summary",
