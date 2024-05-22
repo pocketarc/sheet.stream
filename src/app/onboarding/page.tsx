@@ -1,13 +1,16 @@
-"use client";
-
-import { useSearchParams } from "next/navigation";
 import Onboarding from "@/components/Onboarding";
 
-export default function Page() {
-    const query = useSearchParams();
-    const token = query.get("token");
+type PageParams = {
+    params: Record<string, never>;
+    searchParams?: {
+        token?: string | string[];
+    };
+};
 
-    if (!token) {
+export default function Page({ searchParams }: PageParams) {
+    const token = searchParams?.token;
+
+    if (!token || typeof token !== "string") {
         return <>Error: No token found.</>;
     }
 

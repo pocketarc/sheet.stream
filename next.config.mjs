@@ -32,3 +32,5 @@ if (process.env.SENTRY_DSN) {
     );
 }
 
+export default exports;
+
