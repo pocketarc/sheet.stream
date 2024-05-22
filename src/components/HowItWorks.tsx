@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import React from "react";
 
@@ -33,14 +31,6 @@ export default function HowItWorks() {
                         </div>
                     </div>
                     <div className="mt-8">
-                        <button
-                            type="button"
-                            onClick={() => {
-                                throw new Error("Sentry Frontend Error");
-                            }}
-                        >
-                            Throw error
-                        </button>
                         <Link
                             prefetch={false}
                             className="inline-block truncate px-8 py-3 text-purple-50 font-title text-2xl bg-purple-950 rounded-md border-t-2 border-purple-800"
