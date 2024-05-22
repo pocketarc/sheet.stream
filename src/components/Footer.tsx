@@ -20,6 +20,14 @@ export default function Footer({ comparisonsLeft }: Props) {
                 &middot;{" "}
                 <Link href="https://twitter.com/pocketarc" className="underline underline-offset-4">
                     X/Twitter
+                </Link>{" "}
+                &middot;{" "}
+                <Link href="/terms-and-conditions" className="underline underline-offset-4">
+                    Terms
+                </Link>{" "}
+                &middot;{" "}
+                <Link href="/privacy-policy" className="underline underline-offset-4">
+                    Privacy
                 </Link>
             </div>
         </div>
