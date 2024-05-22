@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import heroImage from "@/app/sheet-stream.png";
+import heroImage from "../../public/sheet-stream.png";
 import React from "react";
 
 export default function Hero() {
