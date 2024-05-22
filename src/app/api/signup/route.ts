@@ -8,6 +8,8 @@ import { z } from "zod";
 import type { Spreadsheet, StoreStreamDetailsResultFailure, StoreStreamDetailsResultSuccess } from "@/app/types";
 
 export async function GET(request: NextRequest) {
+    throw new Error("API throw error test");
+
     const searchParams = request.nextUrl.searchParams;
     const code = searchParams.get("code");
     const baseUrl = getBaseUrl();

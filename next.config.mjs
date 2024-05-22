@@ -14,7 +14,7 @@ const nextConfig = {
 
 let exports = nextConfig;
 
-if (process.env.SENTRY_DSN) {
+if (process.env["NEXT_PUBLIC_SENTRY_DSN"]) {
     exports = withSentryConfig(
         exports,
         {

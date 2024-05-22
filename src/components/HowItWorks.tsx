@@ -1,15 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import React, { useEffect } from "react";
+import React from "react";
 
 export default function HowItWorks() {
-    useEffect(() => {
-        if (Date.now() > 1) {
-            throw new Error("test");
-        }
-    }, []);
-
     return (
         <section className="w-full py-12 md:py-24 lg:py-32 bg-purple-800">
             <div className="mx-auto container px-4 md:px-12">
@@ -39,6 +33,14 @@ export default function HowItWorks() {
                         </div>
                     </div>
                     <div className="mt-8">
+                        <button
+                            type="button"
+                            onClick={() => {
+                                throw new Error("Sentry Frontend Error");
+                            }}
+                        >
+                            Throw error
+                        </button>
                         <Link
                             prefetch={false}
                             className="inline-block truncate px-8 py-3 text-purple-50 font-title text-2xl bg-purple-950 rounded-md border-t-2 border-purple-800"
