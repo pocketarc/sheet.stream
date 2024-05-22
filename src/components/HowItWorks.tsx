@@ -1,10 +1,14 @@
+"use client";
+
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
 
 export default function HowItWorks() {
-    if (Date.now() > 1) {
-        throw new Error("test");
-    }
+    useEffect(() => {
+        if (Date.now() > 1) {
+            throw new Error("test");
+        }
+    }, []);
 
     return (
         <section className="w-full py-12 md:py-24 lg:py-32 bg-purple-800">
