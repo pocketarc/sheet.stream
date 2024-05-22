@@ -7,6 +7,8 @@ export const size = {
     height: 630,
 };
 
+export const runtime = "edge";
+
 export const contentType = "image/png";
 
 export default async function Image() {
@@ -16,7 +18,7 @@ export default async function Image() {
     const inter = fetch(new URL(interUrl)).then((res) => res.arrayBuffer());
 
     const subtitle = `Display data from a Google Sheet on your Twitch/YouTube/TikTok streams in real-time. Free, easy to setup, and customizable. 📊 🚀`;
-    const showImage = `${getBaseUrl()}/sheet-stream.png`;
+    const image = `${getBaseUrl()}/sheet-stream.png`;
 
     return new ImageResponse(
         (
@@ -57,7 +59,7 @@ export default async function Image() {
                     >
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
-                            src={showImage}
+                            src={image}
                             alt=""
                             style={{
                                 width: "598px",
