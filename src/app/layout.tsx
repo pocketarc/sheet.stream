@@ -22,7 +22,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
     return {
         metadataBase: new URL(baseUrl),
-        title: `${title} - Display data from a Google Sheet on your Twitch/YouTube/TikTok streams in real-time.`,
+        title: `${title} - Display Google Sheet data on your streams`,
         description,
         alternates: {
             canonical: baseUrl,
