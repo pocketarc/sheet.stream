@@ -1,8 +1,34 @@
+import React from "react";
+import { InfoCircledIcon } from "@radix-ui/react-icons";
+
 export default function Page() {
     return (
         <div>
             <h1>Privacy Policy</h1>
-            <p>Last updated: May 22, 2024</p>
+            <p>Last updated: June 4, 2024</p>
+
+            <p className="text-sm mt-4 text-purple-300"></p>
+
+            <div className="rounded-md bg-blue-100 p-4">
+                <div className="flex">
+                    <div className="flex-shrink-0 pl-4 pt-6">
+                        <InfoCircledIcon className="h-5 w-5 text-blue-400" aria-hidden="true" />
+                    </div>
+                    <div className="flex-1">
+                        <p className="px-2 text-base text-blue-700">
+                            sheet.stream&apos;s use and transfer to any other app of information received from Google APIs adheres to{" "}
+                            <a
+                                href="https://developers.google.com/terms/api-services-user-data-policy#additional_requirements_for_specific_api_scopes"
+                                className="underline text-blue-700 hover:text-blue-500"
+                            >
+                                Google API Services User Data Policy
+                            </a>
+                            , including the Limited Use requirements.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
             <p>
                 This Privacy Policy describes Our policies and procedures on the collection, use and disclosure of Your information when You use the Service and
                 tells You about Your privacy rights and how the law protects You.
