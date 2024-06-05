@@ -46,7 +46,13 @@ export default function Onboarding({ token }: Props) {
                     }),
                 });
 
-                setState(await result.json());
+                const newState: StoreStreamDetailsResult = await result.json();
+                setState(newState);
+
+                if (isStoreStreamDetailsResultSuccess(newState) && newState.sheets[0]) {
+                    setSheetId(newState.sheets[0].id);
+                    setSheetName(newState.sheets[0].name);
+                }
             } else if (isStoreStreamDetailsResultSuccess(state)) {
                 const result = await fetch("/api/signup/sheet", {
                     method: "POST",
