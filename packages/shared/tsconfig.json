@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+        "lib": ["esnext", "dom"],
+        "module": "esnext",
+        "moduleResolution": "bundler",
+        "target": "ES2022",
+        "strict": true,
+        "skipLibCheck": true,
+        "noEmit": true,
+        "isolatedModules": true,
+        "verbatimModuleSyntax": true,
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true
+    },
+    "include": ["src/**/*.ts"]
+}

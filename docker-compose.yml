@@ -1,0 +1,89 @@
+# Local development services for sheet-stream.
+# `docker compose up` runs MySQL, applies migrations, and starts the backend
+# API + refresh worker. The frontend runs on the host (`bun run dev:frontend`).
+#
+# Requires apps/backend/.env (copy it from apps/backend/.env.example) — the
+# backend services read GOOGLE_* / SENTRY_DSN from there.
+name: sheet-stream
+
+x-backend: &backend
+    build:
+        context: .
+        dockerfile: apps/backend/Dockerfile
+    image: sheet-stream-backend
+    env_file:
+        - apps/backend/.env
+    environment:
+        NODE_ENV: production
+        PORT: "3001"
+        DB_HOST: mysql
+        DB_PORT: "3306"
+        DB_USERNAME: sheetstream
+        DB_PASSWORD: sheetstream
+        DB_DATABASE: sheetstream
+        BACKEND_BASE_URL: http://localhost:3001
+        FRONTEND_BASE_URL: http://localhost:3000
+        STORAGE_PATH: /app/apps/backend/storage
+    depends_on:
+        mysql:
+            condition: service_healthy
+
+services:
+    mysql:
+        image: mysql:9.7
+        environment:
+            - MYSQL_ROOT_PASSWORD=root
+            - MYSQL_DATABASE=sheetstream
+            - MYSQL_USER=sheetstream
+            - MYSQL_PASSWORD=sheetstream
+        command: >
+            --character-set-server=utf8mb4
+            --collation-server=utf8mb4_0900_ai_ci
+            --sql-mode=STRICT_TRANS_TABLES,NO_ZERO_DATE,NO_ZERO_IN_DATE,ERROR_FOR_DIVISION_BY_ZERO
+            --default-time-zone=+00:00
+        ports:
+            - "3306:3306"
+        volumes:
+            - mysql_data:/var/lib/mysql
+        healthcheck:
+            # MYSQL_PWD keeps the password out of argv.
+            test: ["CMD-SHELL", "MYSQL_PWD=root mysqladmin ping -h 127.0.0.1 -u root --silent"]
+            interval: 5s
+            timeout: 3s
+            retries: 10
+            start_period: 30s
+
+    # One-shot: run database migrations, then exit. Gates the API and worker.
+    init:
+        <<: *backend
+        command: ["bun", "run", "migrate:prod"]
+        restart: "no"
+
+    backend-api:
+        <<: *backend
+        command: ["bun", "run", "start"]
+        ports:
+            - "3001:3001"
+        depends_on:
+            mysql:
+                condition: service_healthy
+            init:
+                condition: service_completed_successfully
+        healthcheck:
+            test: ["CMD", "wget", "--no-verbose", "--spider", "http://127.0.0.1:3001/healthz"]
+            interval: 5s
+            timeout: 3s
+            retries: 5
+            start_period: 10s
+
+    backend-worker:
+        <<: *backend
+        command: ["bun", "run", "jobs-prod"]
+        depends_on:
+            mysql:
+                condition: service_healthy
+            init:
+                condition: service_completed_successfully
+
+volumes:
+    mysql_data:
