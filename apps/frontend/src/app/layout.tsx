@@ -1,9 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import { Pixelify_Sans as Pixelify } from "next/font/google";
 import "./globals.css";
-import React from "react";
 import Script from "next/script";
-import Footer from "@/components/Footer";
+import type React from "react";
+import Footer from "@/components/Footer.tsx";
 import getBaseUrl from "@/utils/getBaseUrl.ts";
 
 const pixelify = Pixelify({ weight: "400", subsets: ["latin"], variable: "--font-title" });
@@ -17,8 +17,9 @@ export const viewport: Viewport = {
 const baseUrl = getBaseUrl();
 
 export async function generateMetadata(): Promise<Metadata> {
-    const title = `sheet.stream`;
-    const description = `Display data from a Google Sheet on your Twitch/YouTube/TikTok streams in real-time. Free, easy to setup, and customizable.`;
+    const title = "sheet.stream";
+    const description =
+        "Display data from a Google Sheet on your Twitch/YouTube/TikTok streams in real-time. Free, easy to setup, and customizable.";
 
     return {
         metadataBase: new URL(baseUrl),
@@ -52,7 +53,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     <Footer />
                 </div>
             </body>
-            <Script src={`${baseUrl}/js/script.js`} strategy="afterInteractive" data-domain={domain} data-api="/api/event" />
+            <Script
+                src={`${baseUrl}/js/script.js`}
+                strategy="afterInteractive"
+                data-domain={domain}
+                data-api="/api/event"
+            />
         </html>
     );
 }

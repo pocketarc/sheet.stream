@@ -1,8 +1,8 @@
 "use client";
 
-import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import Onboarding from "@/components/Onboarding";
+import { Suspense } from "react";
+import Onboarding from "@/components/Onboarding.tsx";
 
 function OnboardingPage() {
     const searchParams = useSearchParams();

@@ -1,11 +1,16 @@
 "use client";
-import React from "react";
 import { motion } from "framer-motion";
-import { cn } from "@/utils/cn";
+import type React from "react";
+import { cn } from "@/utils/cn.ts";
 
 export const LampContainer = ({ children, className }: { children: React.ReactNode; className?: string }) => {
     return (
-        <div className={cn("relative flex min-h-screen flex-col items-center justify-center overflow-hidden w-full rounded-md z-0", className)}>
+        <div
+            className={cn(
+                "relative flex min-h-screen flex-col items-center justify-center overflow-hidden w-full rounded-md z-0",
+                className,
+            )}
+        >
             <div className="relative flex w-full flex-1 scale-y-125 items-center justify-center isolate z-0 ">
                 <motion.div
                     initial={{ opacity: 0.5, width: "15rem" }}
@@ -16,7 +21,7 @@ export const LampContainer = ({ children, className }: { children: React.ReactNo
                         ease: "easeInOut",
                     }}
                     style={{
-                        backgroundImage: `conic-gradient(var(--conic-position), var(--tw-gradient-stops))`,
+                        backgroundImage: "conic-gradient(var(--conic-position), var(--tw-gradient-stops))",
                     }}
                     className="absolute inset-auto right-1/2 h-56 overflow-visible w-[30rem] bg-gradient-conic from-purple-500 via-transparent to-transparent text-white [--conic-position:from_70deg_at_center_top]"
                 >
@@ -32,7 +37,7 @@ export const LampContainer = ({ children, className }: { children: React.ReactNo
                         ease: "easeInOut",
                     }}
                     style={{
-                        backgroundImage: `conic-gradient(var(--conic-position), var(--tw-gradient-stops))`,
+                        backgroundImage: "conic-gradient(var(--conic-position), var(--tw-gradient-stops))",
                     }}
                     className="absolute inset-auto left-1/2 h-56 w-[30rem] bg-gradient-conic from-transparent via-transparent to-purple-500 text-white [--conic-position:from_290deg_at_center_top]"
                 >

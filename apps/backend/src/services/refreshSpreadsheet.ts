@@ -1,12 +1,12 @@
 import type { Cell, Spreadsheet } from "@sheet-stream/shared";
-import getKnex from "../db/getKnex";
-import { getCellValues } from "./getCellValues";
-import { logger } from "./logger";
+import getKnex from "../db/getKnex.ts";
+import { getCellValues } from "./getCellValues.ts";
+import { logger } from "./logger.ts";
 
 export async function refreshSpreadsheet(spreadsheet: Spreadsheet, spreadsheetCells: Cell[]): Promise<void> {
     const knex = getKnex();
 
-    logger.info(`Updating spreadsheet.`, {
+    logger.info("Updating spreadsheet.", {
         spreadsheet: spreadsheet.id,
         cells: spreadsheetCells.map((cell) => cell.cell),
     });
@@ -18,13 +18,13 @@ export async function refreshSpreadsheet(spreadsheet: Spreadsheet, spreadsheetCe
 
         if (cellRecord) {
             if (cellRecord.value !== value) {
-                logger.info(`Updated cell value.`, {
+                logger.info("Updated cell value.", {
                     spreadsheet: spreadsheet.id,
                     cell: cellRecord.cell,
                     value,
                 });
             } else {
-                logger.info(`Cell value unchanged.`, {
+                logger.info("Cell value unchanged.", {
                     spreadsheet: spreadsheet.id,
                     cell: cellRecord.cell,
                     value,
@@ -43,7 +43,7 @@ export async function refreshSpreadsheet(spreadsheet: Spreadsheet, spreadsheetCe
 
             await Promise.all(queries);
         } else {
-            logger.error(`Cell not found in spreadsheetCells despite us having just fetched it.`, {
+            logger.error("Cell not found in spreadsheetCells despite us having just fetched it.", {
                 spreadsheet: spreadsheet.id,
                 cell,
                 value,

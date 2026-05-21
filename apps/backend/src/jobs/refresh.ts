@@ -1,9 +1,9 @@
-import "../otel";
-import { subSeconds } from "date-fns/subSeconds";
+import "../otel.ts";
 import type { Cell, Spreadsheet } from "@sheet-stream/shared";
-import getKnex from "../db/getKnex";
-import { refreshSpreadsheet } from "../services/refreshSpreadsheet";
-import { logger } from "../services/logger";
+import { subSeconds } from "date-fns/subSeconds";
+import getKnex from "../db/getKnex.ts";
+import { logger } from "../services/logger.ts";
+import { refreshSpreadsheet } from "../services/refreshSpreadsheet.ts";
 
 const knex = getKnex();
 

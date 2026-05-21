@@ -1,10 +1,13 @@
 import type { Cell, Spreadsheet } from "@sheet-stream/shared";
-import { google } from "googleapis";
 import { GaxiosError } from "gaxios";
-import { logger } from "./logger";
+import { google } from "googleapis";
+import { logger } from "./logger.ts";
 
 export async function getCellValues(spreadsheet: Spreadsheet, cells: Cell[]): Promise<Record<string, string | null>> {
-    const oauth2Client = new google.auth.OAuth2(process.env["GOOGLE_CLIENT_ID"] as string, process.env["GOOGLE_CLIENT_SECRET"] as string);
+    const oauth2Client = new google.auth.OAuth2(
+        process.env["GOOGLE_CLIENT_ID"] as string,
+        process.env["GOOGLE_CLIENT_SECRET"] as string,
+    );
 
     oauth2Client.setCredentials(spreadsheet.token);
 
@@ -29,7 +32,12 @@ export async function getCellValues(spreadsheet: Spreadsheet, cells: Cell[]): Pr
                 if (cell && value) {
                     cell = cell.split("!")[1];
 
-                    if (cell && typeof value[0] !== "undefined" && typeof value[0][0] !== "undefined" && typeof value[0][0] === "string") {
+                    if (
+                        cell &&
+                        typeof value[0] !== "undefined" &&
+                        typeof value[0][0] !== "undefined" &&
+                        typeof value[0][0] === "string"
+                    ) {
                         result[cell] = value[0][0];
                     }
                 }
@@ -37,7 +45,7 @@ export async function getCellValues(spreadsheet: Spreadsheet, cells: Cell[]): Pr
         }
     } catch (e) {
         if (e instanceof GaxiosError) {
-            logger.error(`Failed to fetch cell values.`, {
+            logger.error("Failed to fetch cell values.", {
                 spreadsheet: spreadsheet.id,
                 error: {
                     code: e.code,
@@ -46,7 +54,7 @@ export async function getCellValues(spreadsheet: Spreadsheet, cells: Cell[]): Pr
                 },
             });
         } else {
-            logger.error(`Failed to fetch cell values.`, {
+            logger.error("Failed to fetch cell values.", {
                 spreadsheet: spreadsheet.id,
                 error: e,
             });

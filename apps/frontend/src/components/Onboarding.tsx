@@ -1,20 +1,21 @@
 "use client";
 
-import { CardTitle, CardDescription, CardHeader, CardContent, CardFooter, Card } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { SelectValue, SelectTrigger, SelectItem, SelectContent, Select } from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
-import React, { useMemo, useState } from "react";
-import type { Credentials } from "google-auth-library";
 import {
     isStoreStreamDetailsResultFailure,
     isStoreStreamDetailsResultSuccess,
     type StoreStreamDetailsResult,
     type StoreStreamDetailsResultFailure,
 } from "@sheet-stream/shared";
+import type { Credentials } from "google-auth-library";
 import { useRouter } from "next/navigation";
-import getBackendUrl from "@/utils/getBackendUrl";
+import type React from "react";
+import { useMemo, useState } from "react";
+import { Button } from "@/components/ui/button.tsx";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card.tsx";
+import { Input } from "@/components/ui/input.tsx";
+import { Label } from "@/components/ui/label.tsx";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select.tsx";
+import getBackendUrl from "@/utils/getBackendUrl.ts";
 
 type Props = {
     token: Credentials;
@@ -66,7 +67,7 @@ export default function Onboarding({ token }: Props) {
                 });
 
                 const body = await result.json();
-                router.push("/edit?id=" + body.id);
+                router.push(`/edit?id=${body.id}`);
             } else {
                 throw new Error(
                     "Invalid state; tried to submit form when the state wasn't either a StoreStreamDetailsResultFailure or a StoreStreamDetailsResultSuccess.",
@@ -98,7 +99,9 @@ export default function Onboarding({ token }: Props) {
                     <Card>
                         <CardHeader>
                             <CardTitle>Welcome to sheet.stream</CardTitle>
-                            <CardDescription>Let&apos;s get you set up to start showing off your stats.</CardDescription>
+                            <CardDescription>
+                                Let&apos;s get you set up to start showing off your stats.
+                            </CardDescription>
                         </CardHeader>
                         <CardContent>
                             <div className="grid gap-4">
@@ -113,7 +116,9 @@ export default function Onboarding({ token }: Props) {
                                         value={streamUrl}
                                         onChange={(e) => setStreamUrl(e.target.value)}
                                     />
-                                    <p className="text-sm text-haze-600">Enter the URL of your streaming channel (Twitch, YouTube, TikTok, etc.).</p>
+                                    <p className="text-sm text-haze-600">
+                                        Enter the URL of your streaming channel (Twitch, YouTube, TikTok, etc.).
+                                    </p>
                                 </div>
                                 <div className="grid gap-2">
                                     <Label htmlFor="sheetsUrl">Google Sheets URL</Label>
@@ -126,7 +131,9 @@ export default function Onboarding({ token }: Props) {
                                         value={sheetsUrl}
                                         onChange={(e) => setSheetsUrl(e.target.value)}
                                     />
-                                    <p className="text-sm text-haze-600">Enter the URL of the Google Sheet where you want to store your streaming data.</p>
+                                    <p className="text-sm text-haze-600">
+                                        Enter the URL of the Google Sheet where you want to store your streaming data.
+                                    </p>
                                 </div>
                             </div>
                         </CardContent>
@@ -145,7 +152,8 @@ export default function Onboarding({ token }: Props) {
                                 Enter the cell that has the data you want to display on your stream (e.g. A1, H4).
                                 <br />
                                 <br />
-                                Note: If you want to display more than one cell, you will need to go through this process for each cell.
+                                Note: If you want to display more than one cell, you will need to go through this
+                                process for each cell.
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
@@ -164,7 +172,9 @@ export default function Onboarding({ token }: Props) {
                                             ))}
                                         </SelectContent>
                                     </Select>
-                                    <p className="text-sm text-gray-500 dark:text-gray-400">Select the sheet you want to display data from.</p>
+                                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                                        Select the sheet you want to display data from.
+                                    </p>
                                 </div>
                                 <div className="grid gap-2">
                                     <Label htmlFor="sheetCell">Cell to display</Label>

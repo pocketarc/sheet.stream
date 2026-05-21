@@ -1,18 +1,26 @@
-import { Hono } from "hono";
-import { google } from "googleapis";
+import type {
+    Spreadsheet,
+    StoreStreamDetailsResultFailure,
+    StoreStreamDetailsResultSuccess,
+} from "@sheet-stream/shared";
 import { GaxiosError } from "gaxios";
+import { google } from "googleapis";
+import { Hono } from "hono";
 import { z } from "zod";
-import type { Spreadsheet, StoreStreamDetailsResultFailure, StoreStreamDetailsResultSuccess } from "@sheet-stream/shared";
-import getKnex from "../db/getKnex";
-import { logger } from "../services/logger";
-import { config } from "../config";
+import { config } from "../config.ts";
+import getKnex from "../db/getKnex.ts";
+import { logger } from "../services/logger.ts";
 
 export const signupRoutes = new Hono();
 
 const scopes = ["https://www.googleapis.com/auth/spreadsheets.readonly"];
 
 function createOAuthClient() {
-    return new google.auth.OAuth2(config.googleClientId, config.googleClientSecret, `${config.backendBaseUrl}/api/signup`);
+    return new google.auth.OAuth2(
+        config.googleClientId,
+        config.googleClientSecret,
+        `${config.backendBaseUrl}/api/signup`,
+    );
 }
 
 // Step 1: start the OAuth flow; step 3: handle Google's callback. The callback
@@ -24,7 +32,9 @@ signupRoutes.get("/api/signup", async (c) => {
     if (code) {
         try {
             const { tokens } = await oauth2Client.getToken(code);
-            return c.redirect(`${config.frontendBaseUrl}/onboarding?token=${encodeURIComponent(JSON.stringify(tokens))}`);
+            return c.redirect(
+                `${config.frontendBaseUrl}/onboarding?token=${encodeURIComponent(JSON.stringify(tokens))}`,
+            );
         } catch (e) {
             if (e instanceof GaxiosError && e.response) {
                 logger.error("Error response from Google", e.response.data);
@@ -67,7 +77,10 @@ signupRoutes.post("/api/signup", async (c) => {
 
     if (!parsedFormData.success) {
         return c.json(
-            { type: "StoreStreamDetailsResultFailure", errors: parsedFormData.error.flatten().fieldErrors } satisfies StoreStreamDetailsResultFailure,
+            {
+                type: "StoreStreamDetailsResultFailure",
+                errors: parsedFormData.error.flatten().fieldErrors,
+            } satisfies StoreStreamDetailsResultFailure,
             400,
         );
     }
@@ -103,7 +116,7 @@ signupRoutes.post("/api/signup", async (c) => {
         for (const sheet of result.data.sheets ?? []) {
             if (sheet.properties) {
                 sheetsData.push({
-                    id: sheet.properties.sheetId + "",
+                    id: `${sheet.properties.sheetId}`,
                     name: sheet.properties.title ?? "Unknown",
                 });
             }

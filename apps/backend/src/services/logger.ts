@@ -2,7 +2,11 @@ import winston from "winston";
 
 const isProduction = process.env["NODE_ENV"] === "production";
 
-const devConsole = winston.format.combine(winston.format.colorize(), winston.format.timestamp(), winston.format.simple());
+const devConsole = winston.format.combine(
+    winston.format.colorize(),
+    winston.format.timestamp(),
+    winston.format.simple(),
+);
 const defaultFormat = winston.format.combine(winston.format.timestamp(), winston.format.json());
 
 const handlers: winston.transport[] = [];

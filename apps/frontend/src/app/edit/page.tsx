@@ -1,10 +1,10 @@
 "use client";
 
-import { Suspense, useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
 import type { CellEditResponse } from "@sheet-stream/shared";
-import ChangeStyle from "@/components/ChangeStyle";
-import getBackendUrl from "@/utils/getBackendUrl";
+import { useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useState } from "react";
+import ChangeStyle from "@/components/ChangeStyle.tsx";
+import getBackendUrl from "@/utils/getBackendUrl.ts";
 
 function EditPage() {
     const searchParams = useSearchParams();

@@ -1,8 +1,8 @@
-import { Hono } from "hono";
-import { z } from "zod";
-import { typeid } from "typeid-js";
 import type { Cell, Spreadsheet, StoreCellResultFailure, StoreCellResultSuccess } from "@sheet-stream/shared";
-import getKnex from "../db/getKnex";
+import { Hono } from "hono";
+import { typeid } from "typeid-js";
+import { z } from "zod";
+import getKnex from "../db/getKnex.ts";
 
 export const signupSheetRoutes = new Hono();
 
@@ -21,7 +21,10 @@ signupSheetRoutes.post("/api/signup/sheet", async (c) => {
 
     if (!parsed.success) {
         return c.json(
-            { type: "StoreCellResultFailure", errors: parsed.error.flatten().fieldErrors } satisfies StoreCellResultFailure,
+            {
+                type: "StoreCellResultFailure",
+                errors: parsed.error.flatten().fieldErrors,
+            } satisfies StoreCellResultFailure,
             400,
         );
     }
@@ -32,7 +35,10 @@ signupSheetRoutes.post("/api/signup/sheet", async (c) => {
 
     if (!spreadsheet) {
         return c.json(
-            { type: "StoreCellResultFailure", errors: { sheetId: ["Sheet not found. Please start again."] } } satisfies StoreCellResultFailure,
+            {
+                type: "StoreCellResultFailure",
+                errors: { sheetId: ["Sheet not found. Please start again."] },
+            } satisfies StoreCellResultFailure,
             400,
         );
     }
@@ -61,7 +67,10 @@ signupSheetRoutes.post("/api/signup/sheet", async (c) => {
 
     if (!actualCell) {
         return c.json(
-            { type: "StoreCellResultFailure", errors: { sheetCell: ["Couldn't store cell. Please try again."] } } satisfies StoreCellResultFailure,
+            {
+                type: "StoreCellResultFailure",
+                errors: { sheetCell: ["Couldn't store cell. Please try again."] },
+            } satisfies StoreCellResultFailure,
             400,
         );
     }

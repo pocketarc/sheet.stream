@@ -3,7 +3,11 @@ import plugin from "tailwindcss/plugin";
 
 const config: Config = {
     darkMode: "class",
-    content: ["./src/pages/**/*.{js,ts,jsx,tsx,mdx}", "./src/components/**/*.{js,ts,jsx,tsx,mdx}", "./src/app/**/*.{js,ts,jsx,tsx,mdx}"],
+    content: [
+        "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
+        "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
+        "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+    ],
     prefix: "",
     theme: {
         extend: {
@@ -90,7 +94,7 @@ const config: Config = {
         require("tailwindcss-animate"),
         require("@tailwindcss/forms"),
         require("@tailwindcss/typography"),
-        plugin(function ({ matchUtilities, theme }) {
+        plugin(({ matchUtilities, theme }) => {
             matchUtilities(
                 {
                     "text-shadow": (value) => ({

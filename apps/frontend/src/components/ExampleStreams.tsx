@@ -1,6 +1,6 @@
-import { CardContent, Card } from "@/components/ui/card";
-import type { Streamer } from "@/app/types";
 import Image from "next/image";
+import type { Streamer } from "@/app/types.ts";
+import { Card, CardContent } from "@/components/ui/card.tsx";
 
 type Props = {
     streamers: Streamer[];
@@ -26,7 +26,9 @@ export default function ExampleStreams({ streamers }: Props) {
                                         objectFit: "cover",
                                     }}
                                 />
-                                <h3 className="mt-4 text-lg font-semibold text-gray-900 dark:text-gray-100">{streamer.title}</h3>
+                                <h3 className="mt-4 text-lg font-semibold text-gray-900 dark:text-gray-100">
+                                    {streamer.title}
+                                </h3>
                                 <p className="mt-2 text-gray-600 dark:text-gray-400">{streamer.description}</p>
                             </CardContent>
                         </Card>

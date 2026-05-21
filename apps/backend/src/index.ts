@@ -1,13 +1,13 @@
-import "./otel";
+import "./otel.ts";
 import { serve } from "@hono/node-server";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
-import { config } from "./config";
-import { logger } from "./services/logger";
-import { signupRoutes } from "./routes/signup";
-import { signupSheetRoutes } from "./routes/signup-sheet";
-import { cellRoutes } from "./routes/cell";
-import { editRoutes } from "./routes/edit";
+import { config } from "./config.ts";
+import { cellRoutes } from "./routes/cell.ts";
+import { editRoutes } from "./routes/edit.ts";
+import { signupRoutes } from "./routes/signup.ts";
+import { signupSheetRoutes } from "./routes/signup-sheet.ts";
+import { logger } from "./services/logger.ts";
 
 const app = new Hono();
 

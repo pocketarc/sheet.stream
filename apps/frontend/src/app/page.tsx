@@ -1,5 +1,5 @@
-import HowItWorks from "@/components/HowItWorks";
-import Hero from "@/components/Hero";
+import Hero from "@/components/Hero.tsx";
+import HowItWorks from "@/components/HowItWorks.tsx";
 
 /*
 import type { Streamer } from "@/app/types";

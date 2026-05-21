@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import getBackendUrl from "@/utils/getBackendUrl";
+import getBackendUrl from "@/utils/getBackendUrl.ts";
 import heroImage from "../../public/sheet-stream.png";
 
 export default function Hero() {
@@ -10,8 +10,12 @@ export default function Hero() {
             <div className="mx-auto container px-4 md:px-6">
                 <div className="flex flex-col space-y-8 lg:space-y-0 lg:flex-row items-center lg:space-x-12 xl:space-x-24 2xl:space-x-32 text-center lg:text-left">
                     <div className="text-2xl md:text-3xl font-body md:leading-snug text-shadow shadow-purple-800">
-                        <h1 className="text-4xl font-bold tracking-tighter md:text-5xl xl:text-7xl 2xl:text-8xl text-white font-title">sheet.stream</h1>
-                        <p className="mt-4">Display data from a Google Sheet on your Twitch/YouTube/TikTok streams in real-time.</p>
+                        <h1 className="text-4xl font-bold tracking-tighter md:text-5xl xl:text-7xl 2xl:text-8xl text-white font-title">
+                            sheet.stream
+                        </h1>
+                        <p className="mt-4">
+                            Display data from a Google Sheet on your Twitch/YouTube/TikTok streams in real-time.
+                        </p>
                         <p className="mt-4">Free, easy to setup, and customizable.</p>
                         <div className="mt-8">
                             <a

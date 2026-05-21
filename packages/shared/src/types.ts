@@ -69,16 +69,24 @@ export type CellEditResponse = {
     spreadsheetName: string;
 };
 
-export type StoreStreamDetailsResult = StoreStreamDetailsResultFailure | StoreStreamDetailsResultSuccess | StoreCellResultSuccess | StoreCellResultFailure;
+export type StoreStreamDetailsResult =
+    | StoreStreamDetailsResultFailure
+    | StoreStreamDetailsResultSuccess
+    | StoreCellResultSuccess
+    | StoreCellResultFailure;
 
 export function isStoreCellResultSuccess(result: StoreStreamDetailsResult): result is StoreCellResultSuccess {
     return result.type === "StoreCellResultSuccess";
 }
 
-export function isStoreStreamDetailsResultSuccess(result: StoreStreamDetailsResult): result is StoreStreamDetailsResultSuccess {
+export function isStoreStreamDetailsResultSuccess(
+    result: StoreStreamDetailsResult,
+): result is StoreStreamDetailsResultSuccess {
     return result.type === "StoreStreamDetailsResultSuccess";
 }
 
-export function isStoreStreamDetailsResultFailure(result: StoreStreamDetailsResult): result is StoreStreamDetailsResultFailure {
+export function isStoreStreamDetailsResultFailure(
+    result: StoreStreamDetailsResult,
+): result is StoreStreamDetailsResultFailure {
     return result.type === "StoreStreamDetailsResultFailure";
 }

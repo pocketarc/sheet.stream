@@ -1,24 +1,30 @@
 {
-  "name": "sheet-stream",
-  "version": "0.1.0",
-  "private": true,
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
-  "scripts": {
-    "dev:frontend": "bun run --cwd apps/frontend dev",
-    "build:frontend": "bun run --cwd apps/frontend build",
-    "dev:backend": "bun run --cwd apps/backend dev",
-    "jobs:backend": "bun run --cwd apps/backend jobs",
-    "migrate": "bun run --cwd apps/backend migrate"
-  },
-  "trustedDependencies": [
-    "@sentry/cli",
-    "esbuild",
-    "protobufjs",
-    "sharp",
-    "unrs-resolver",
-    "workerd"
-  ]
+    "name": "sheet-stream",
+    "version": "0.1.0",
+    "private": true,
+    "workspaces": [
+        "apps/*",
+        "packages/*"
+    ],
+    "scripts": {
+        "dev:frontend": "bun run --cwd apps/frontend dev",
+        "build:frontend": "bun run --cwd apps/frontend build",
+        "dev:backend": "bun run --cwd apps/backend dev",
+        "jobs:backend": "bun run --cwd apps/backend jobs",
+        "migrate": "bun run --cwd apps/backend migrate"
+    },
+    "trustedDependencies": [
+        "@sentry/cli",
+        "esbuild",
+        "protobufjs",
+        "sharp",
+        "unrs-resolver",
+        "workerd"
+    ],
+    "devDependencies": {
+        "@biomejs/biome": "^2.4.15",
+        "eslint": "^10.4.0",
+        "eslint-plugin-security": "^4.0.0",
+        "typescript-eslint": "^8.59.4"
+    }
 }

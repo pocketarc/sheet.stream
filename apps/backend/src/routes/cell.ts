@@ -1,11 +1,11 @@
+import type { Cell, CellEditResponse, Spreadsheet, ViewCellResponse } from "@sheet-stream/shared";
+import { isBefore } from "date-fns/isBefore";
+import { subSeconds } from "date-fns/subSeconds";
 import { Hono } from "hono";
 import type { CSSProperties } from "react";
-import { subSeconds } from "date-fns/subSeconds";
-import { isBefore } from "date-fns/isBefore";
-import type { Cell, CellEditResponse, Spreadsheet, ViewCellResponse } from "@sheet-stream/shared";
-import getKnex from "../db/getKnex";
-import { jsToCss } from "../services/jsToCss";
-import { refreshSpreadsheet } from "../services/refreshSpreadsheet";
+import getKnex from "../db/getKnex.ts";
+import { jsToCss } from "../services/jsToCss.ts";
+import { refreshSpreadsheet } from "../services/refreshSpreadsheet.ts";
 
 export const cellRoutes = new Hono();
 
@@ -67,7 +67,7 @@ cellRoutes.get("/api/cell/:id", async (c) => {
     const css = cell.css ?? defaultCss;
 
     const accept = c.req.header("accept");
-    if (accept && accept.includes("application/json")) {
+    if (accept?.includes("application/json")) {
         return c.json({ value, css } satisfies ViewCellResponse);
     }
 

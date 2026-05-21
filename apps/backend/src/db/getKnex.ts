@@ -1,6 +1,6 @@
-import knex from "knex";
 import type { Knex } from "knex";
-import knexConfig from "../../knexfile";
+import knex from "knex";
+import knexConfig from "../../knexfile.ts";
 
 let instance: Knex | undefined;
 

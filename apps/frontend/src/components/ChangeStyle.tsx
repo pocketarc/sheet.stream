@@ -1,16 +1,17 @@
 "use client";
 
-import { CardTitle, CardDescription, CardHeader, CardContent, Card } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { SelectValue, SelectTrigger, SelectItem, SelectContent, Select } from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
-import React, { useEffect, useMemo, useState } from "react";
+import type React from "react";
+import { useEffect, useMemo, useState } from "react";
 import FontPicker, { type FontToVariant } from "react-fontpicker-ts";
+import { Button } from "@/components/ui/button.tsx";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card.tsx";
+import { Input } from "@/components/ui/input.tsx";
+import { Label } from "@/components/ui/label.tsx";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select.tsx";
 import "react-fontpicker-ts/dist/index.css";
-import { type ViewCellResponse } from "@sheet-stream/shared";
+import type { ViewCellResponse } from "@sheet-stream/shared";
 import { calcAPCA } from "apca-w3";
-import getBackendUrl from "@/utils/getBackendUrl";
+import getBackendUrl from "@/utils/getBackendUrl.ts";
 
 type Props = {
     id: string;
@@ -21,11 +22,18 @@ type Props = {
     initialCssValues: React.CSSProperties | null;
 };
 
-export default function ChangeStyle({ id, spreadsheetName, sheetName, cell, initialCellValue, initialCssValues }: Props) {
+export default function ChangeStyle({
+    id,
+    spreadsheetName,
+    sheetName,
+    cell,
+    initialCellValue,
+    initialCssValues,
+}: Props) {
     const [pending, setPending] = useState(false);
     let defaultSize = initialCssValues?.fontSize ?? "48";
     if (typeof defaultSize === "string") {
-        defaultSize = parseInt(defaultSize);
+        defaultSize = parseInt(defaultSize, 10);
     }
 
     let defaultWeight = initialCssValues?.fontWeight ?? "700";
@@ -105,7 +113,7 @@ export default function ChangeStyle({ id, spreadsheetName, sheetName, cell, init
 
     const css = {
         color: textColor,
-        fontSize: textSize + "px",
+        fontSize: `${textSize}px`,
         fontWeight: textWeight,
         fontStyle: textStyle,
         fontFamily: font,
@@ -147,11 +155,11 @@ export default function ChangeStyle({ id, spreadsheetName, sheetName, cell, init
 
         const interval = setInterval(refresh, 1000);
         return () => clearInterval(interval);
-    }, [id, setCellValue]);
+    }, [id]);
 
     const isDisabled = !isDirty || pending;
     const buttonLabel = saved ? "Saved!" : pending ? "Saving..." : "Save";
-    const url = getBackendUrl() + "/api/cell/" + id;
+    const url = `${getBackendUrl()}/api/cell/${id}`;
 
     return (
         <section className="flex flex-grow flex-col items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
@@ -162,15 +170,21 @@ export default function ChangeStyle({ id, spreadsheetName, sheetName, cell, init
                             Text style for <strong>{cell}</strong>
                         </CardTitle>
                         <CardDescription>
-                            Customize the style of the text that will be displayed on your live stream. This is for <strong>{cell}</strong> in{" "}
-                            <strong>{sheetName}</strong> of <strong>{spreadsheetName}</strong>.
+                            Customize the style of the text that will be displayed on your live stream. This is for{" "}
+                            <strong>{cell}</strong> in <strong>{sheetName}</strong> of{" "}
+                            <strong>{spreadsheetName}</strong>.
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
                         <div className="grid gap-2">
                             <div className="fontpicker-container">
                                 <Label htmlFor="fontFamily">Font</Label>
-                                <FontPicker autoLoad loadAllVariants defaultValue={font} fontVariants={handleFontChange} />
+                                <FontPicker
+                                    autoLoad
+                                    loadAllVariants
+                                    defaultValue={font}
+                                    fontVariants={handleFontChange}
+                                />
                             </div>
 
                             <div className="grid grid-cols-2 gap-4">
@@ -195,7 +209,7 @@ export default function ChangeStyle({ id, spreadsheetName, sheetName, cell, init
                                         min="1"
                                         type="number"
                                         onInput={(e) => {
-                                            setTextSize(parseInt(e.currentTarget.value));
+                                            setTextSize(parseInt(e.currentTarget.value, 10));
                                             setIsDirty(true);
                                         }}
                                     />
@@ -244,7 +258,9 @@ export default function ChangeStyle({ id, spreadsheetName, sheetName, cell, init
                                 </div>
                             </div>
                             <div className="mt-2 w-full overflow-hidden">
-                                <h3 className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Preview</h3>
+                                <h3 className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                                    Preview
+                                </h3>
                                 <div className="mt-2 p-8 rounded-md flex items-center justify-center" style={css}>
                                     {cellValue ?? "This is a preview of the text style."}
                                 </div>
@@ -255,18 +271,29 @@ export default function ChangeStyle({ id, spreadsheetName, sheetName, cell, init
                             <div className="mt-4 text-sm w-full">
                                 <h3 className="font-semibold leading-none tracking-tight">How to use this</h3>
                                 <p className="mt-1.5 text-sm text-haze-600">
-                                    Add a &ldquo;Browser Source&rdquo; in your streaming software (OBS, Streamlabs, etc.) and paste the following URL:
+                                    Add a &ldquo;Browser Source&rdquo; in your streaming software (OBS, Streamlabs,
+                                    etc.) and paste the following URL:
                                 </p>
-                                <code className="block font-mono bg-haze-100 w-full text-haze-800 p-2 my-1.5 rounded-md break-all">{url}</code>
+                                <code className="block font-mono bg-haze-100 w-full text-haze-800 p-2 my-1.5 rounded-md break-all">
+                                    {url}
+                                </code>
                                 <p className="mt-1.5 text-sm text-haze-600">
-                                    Your text will appear on your live stream in a few seconds, and will update every few seconds.
+                                    Your text will appear on your live stream in a few seconds, and will update every
+                                    few seconds.
                                 </p>
-                                <p className="mt-1.5 text-sm text-haze-600">You can also bookmark this page to easily edit this cell&apos;s style later.</p>
+                                <p className="mt-1.5 text-sm text-haze-600">
+                                    You can also bookmark this page to easily edit this cell&apos;s style later.
+                                </p>
                                 <p className="mt-1.5 text-sm">
                                     <strong>Need help?</strong>{" "}
                                     <span className="text-haze-600">
                                         Tweet me at{" "}
-                                        <a href="https://twitter.com/pocketarc" target="_blank" rel="noopener noreferrer" className="text-purple-600">
+                                        <a
+                                            href="https://twitter.com/pocketarc"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="text-purple-600"
+                                        >
                                             @pocketarc
                                         </a>
                                     </span>
