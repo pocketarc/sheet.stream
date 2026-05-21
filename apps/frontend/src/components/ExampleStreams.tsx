@@ -1,4 +1,5 @@
 import Image from "next/image";
+import type { JSX } from "react";
 import type { Streamer } from "@/app/types.ts";
 import { Card, CardContent } from "@/components/ui/card.tsx";
 
@@ -6,14 +7,14 @@ type Props = {
     streamers: Streamer[];
 };
 
-export default function ExampleStreams({ streamers }: Props) {
+export function ExampleStreams({ streamers }: Props): JSX.Element {
     return (
         <section className="px-4 py-8 md:px-6 md:py-12 lg:py-16 bg-gray-50 dark:bg-gray-800">
             <div className="container mx-auto space-y-6">
                 <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Streams using sheet.stream</h2>
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                    {streamers.map((streamer, i) => (
-                        <Card key={i}>
+                    {streamers.map((streamer) => (
+                        <Card key={streamer.url}>
                             <CardContent className="p-6">
                                 <Image
                                     alt={`Thumbnail for ${streamer.title}`}

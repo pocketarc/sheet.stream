@@ -1,6 +1,7 @@
 import type React from "react";
+import type { JSX } from "react";
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function Layout({ children }: { children: React.ReactNode }): JSX.Element {
     return (
         <section className="w-full py-12 md:py-24 lg:py-32 bg-purple-800">
             <div className="mx-auto container px-4 md:px-12">

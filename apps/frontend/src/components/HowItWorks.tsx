@@ -1,6 +1,7 @@
-import getBackendUrl from "@/utils/getBackendUrl.ts";
+import type { JSX } from "react";
+import { getBackendUrl } from "@/utils/getBackendUrl.ts";
 
-export default function HowItWorks() {
+export function HowItWorks(): JSX.Element {
     return (
         <section className="w-full py-12 md:py-24 lg:py-32 bg-purple-800">
             <div className="mx-auto container px-4 md:px-12">

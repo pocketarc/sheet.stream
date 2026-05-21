@@ -1,5 +1,6 @@
-import Hero from "@/components/Hero.tsx";
-import HowItWorks from "@/components/HowItWorks.tsx";
+import type { JSX } from "react";
+import { Hero } from "@/components/Hero.tsx";
+import { HowItWorks } from "@/components/HowItWorks.tsx";
 
 /*
 import type { Streamer } from "@/app/types";
@@ -27,7 +28,7 @@ const streamers: Streamer[] = [
 ];
  */
 
-export default function Component() {
+export default function Component(): JSX.Element {
     return (
         <>
             <Hero />

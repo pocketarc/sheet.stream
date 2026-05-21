@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import getBaseUrl from "@/utils/getBaseUrl.ts";
+import { getBaseUrl } from "@/utils/getBaseUrl.ts";
 
 export const dynamic = "force-static";
 

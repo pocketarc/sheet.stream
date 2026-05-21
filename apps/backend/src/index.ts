@@ -26,5 +26,5 @@ app.onError((err, c) => {
 });
 
 serve({ fetch: app.fetch, port: config.port }, (info) => {
-    logger.info(`sheet-stream backend listening on port ${info.port}`);
+    logger.info(`sheet-stream backend listening on port ${String(info.port)}`);
 });

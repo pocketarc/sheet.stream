@@ -8,8 +8,14 @@
     "exports": {
         ".": "./src/types.ts"
     },
+    "scripts": {
+        "typecheck": "tsc --noEmit"
+    },
     "dependencies": {
         "@types/react": "^19",
         "google-auth-library": "^10"
+    },
+    "devDependencies": {
+        "typescript": "^6"
     }
 }

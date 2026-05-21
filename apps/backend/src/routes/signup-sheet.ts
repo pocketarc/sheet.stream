@@ -2,7 +2,7 @@ import type { Cell, Spreadsheet, StoreCellResultFailure, StoreCellResultSuccess 
 import { Hono } from "hono";
 import { typeid } from "typeid-js";
 import { z } from "zod";
-import getKnex from "../db/getKnex.ts";
+import { getKnex } from "../db/getKnex.ts";
 
 export const signupSheetRoutes = new Hono();
 
@@ -14,7 +14,7 @@ const sheetSchema = z.object({
 });
 
 signupSheetRoutes.post("/api/signup/sheet", async (c) => {
-    const body = await c.req.json();
+    const body: unknown = await c.req.json();
     const knex = getKnex();
 
     const parsed = sheetSchema.safeParse(body);
@@ -23,7 +23,7 @@ signupSheetRoutes.post("/api/signup/sheet", async (c) => {
         return c.json(
             {
                 type: "StoreCellResultFailure",
-                errors: parsed.error.flatten().fieldErrors,
+                errors: z.flattenError(parsed.error).fieldErrors,
             } satisfies StoreCellResultFailure,
             400,
         );
@@ -33,7 +33,7 @@ signupSheetRoutes.post("/api/signup/sheet", async (c) => {
 
     const spreadsheet = await knex<Spreadsheet>("spreadsheets").where("id", id).first();
 
-    if (!spreadsheet) {
+    if (spreadsheet === undefined) {
         return c.json(
             {
                 type: "StoreCellResultFailure",
@@ -65,7 +65,7 @@ signupSheetRoutes.post("/api/signup/sheet", async (c) => {
         })
         .first();
 
-    if (!actualCell) {
+    if (actualCell === undefined) {
         return c.json(
             {
                 type: "StoreCellResultFailure",

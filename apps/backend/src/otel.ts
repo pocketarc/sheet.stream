@@ -5,7 +5,7 @@ import { NodeSDK } from "@opentelemetry/sdk-node";
 // Only start OpenTelemetry when an OTLP endpoint (Grafana Alloy) is configured.
 // The exporter reads OTEL_EXPORTER_OTLP_ENDPOINT and the service name reads
 // OTEL_SERVICE_NAME from the environment automatically.
-if (process.env["OTEL_EXPORTER_OTLP_ENDPOINT"]) {
+if (process.env["OTEL_EXPORTER_OTLP_ENDPOINT"] !== undefined && process.env["OTEL_EXPORTER_OTLP_ENDPOINT"] !== "") {
     const sdk = new NodeSDK({
         traceExporter: new OTLPTraceExporter(),
         instrumentations: [getNodeAutoInstrumentations()],

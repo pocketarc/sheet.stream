@@ -17,7 +17,7 @@ if (isProduction) {
     handlers.push(new winston.transports.Console({ format: devConsole }));
 
     const storagePath = process.env["STORAGE_PATH"];
-    if (storagePath) {
+    if (storagePath !== undefined && storagePath !== "") {
         const logPath = `${storagePath}/logs`;
         handlers.push(
             new winston.transports.File({ filename: `${logPath}/combined.log`, format: defaultFormat }),

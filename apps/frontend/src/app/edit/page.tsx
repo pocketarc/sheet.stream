@@ -2,25 +2,26 @@
 
 import type { CellEditResponse } from "@sheet-stream/shared";
 import { useSearchParams } from "next/navigation";
+import type { JSX } from "react";
 import { Suspense, useEffect, useState } from "react";
-import ChangeStyle from "@/components/ChangeStyle.tsx";
-import getBackendUrl from "@/utils/getBackendUrl.ts";
+import { ChangeStyle } from "@/components/ChangeStyle.tsx";
+import { getBackendUrl } from "@/utils/getBackendUrl.ts";
 
-function EditPage() {
+function EditPage(): JSX.Element {
     const searchParams = useSearchParams();
     const id = searchParams.get("id");
     const [data, setData] = useState<CellEditResponse | null>(null);
     const [error, setError] = useState(false);
 
     useEffect(() => {
-        if (!id) {
+        if (id === null || id === "") {
             setError(true);
             return;
         }
 
         let cancelled = false;
 
-        void (async () => {
+        void (async (): Promise<void> => {
             const res = await fetch(`${getBackendUrl()}/api/cell/${id}/edit`);
 
             if (cancelled) {
@@ -35,7 +36,7 @@ function EditPage() {
             setData((await res.json()) as CellEditResponse);
         })();
 
-        return () => {
+        return (): void => {
             cancelled = true;
         };
     }, [id]);
@@ -44,7 +45,7 @@ function EditPage() {
         return <div>Not found</div>;
     }
 
-    if (!data) {
+    if (data === null) {
         return <div>Loading...</div>;
     }
 
@@ -60,7 +61,7 @@ function EditPage() {
     );
 }
 
-export default function Page() {
+export default function Page(): JSX.Element {
     return (
         <Suspense>
             <EditPage />

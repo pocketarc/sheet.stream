@@ -1,19 +1,22 @@
 import clsx from "clsx";
 import Link from "next/link";
+import type { JSX } from "react";
 
 type Props = {
     comparisonsLeft?: number;
 };
 
-export default function Footer({ comparisonsLeft }: Props) {
+export function Footer({ comparisonsLeft }: Props): JSX.Element {
     /* <Link href="/about" className="underline underline-offset-4">
                     About
                 </Link>{" "} &middot;*/
 
+    const hasComparisonsLeft = comparisonsLeft !== undefined && comparisonsLeft > 0;
+
     return (
         <div className="w-full mx-auto bg-persian-900 p-4">
             <div className="text-white text-center text-xs sm:text-sm">
-                Built <span className={clsx(comparisonsLeft ? "hidden sm:inline-block" : "")}>with 🤍</span> by{" "}
+                Built <span className={clsx(hasComparisonsLeft ? "hidden sm:inline-block" : "")}>with 🤍</span> by{" "}
                 <Link href="https://pocketarc.com" className="underline underline-offset-4">
                     PocketArC
                 </Link>{" "}

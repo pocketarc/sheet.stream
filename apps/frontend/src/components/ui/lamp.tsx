@@ -1,9 +1,16 @@
 "use client";
 import { motion } from "framer-motion";
 import type React from "react";
+import type { JSX } from "react";
 import { cn } from "@/utils/cn.ts";
 
-export const LampContainer = ({ children, className }: { children: React.ReactNode; className?: string }) => {
+export const LampContainer = ({
+    children,
+    className,
+}: {
+    children: React.ReactNode;
+    className?: string;
+}): JSX.Element => {
     return (
         <div
             className={cn(

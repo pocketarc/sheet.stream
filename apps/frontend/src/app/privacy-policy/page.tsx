@@ -1,6 +1,7 @@
 import { InfoCircledIcon } from "@radix-ui/react-icons";
+import type { JSX } from "react";
 
-export default function Page() {
+export default function Page(): JSX.Element {
     return (
         <div>
             <h1>Privacy Policy</h1>

@@ -3,8 +3,9 @@ import { Pixelify_Sans as Pixelify } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
 import type React from "react";
-import Footer from "@/components/Footer.tsx";
-import getBaseUrl from "@/utils/getBaseUrl.ts";
+import type { JSX } from "react";
+import { Footer } from "@/components/Footer.tsx";
+import { getBaseUrl } from "@/utils/getBaseUrl.ts";
 
 const pixelify = Pixelify({ weight: "400", subsets: ["latin"], variable: "--font-title" });
 
@@ -16,7 +17,7 @@ export const viewport: Viewport = {
 
 const baseUrl = getBaseUrl();
 
-export async function generateMetadata(): Promise<Metadata> {
+export function generateMetadata(): Metadata {
     const title = "sheet.stream";
     const description =
         "Display data from a Google Sheet on your Twitch/YouTube/TikTok streams in real-time. Free, easy to setup, and customizable.";
@@ -42,7 +43,7 @@ export async function generateMetadata(): Promise<Metadata> {
     };
 }
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({ children }: { children: React.ReactNode }): JSX.Element {
     const domain = new URL(baseUrl).hostname;
 
     return (

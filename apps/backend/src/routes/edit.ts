@@ -1,7 +1,7 @@
 import type { Cell, EditCellFailure, EditCellSuccess } from "@sheet-stream/shared";
 import { Hono } from "hono";
 import { z } from "zod";
-import getKnex from "../db/getKnex.ts";
+import { getKnex } from "../db/getKnex.ts";
 
 export const editRoutes = new Hono();
 
@@ -18,12 +18,12 @@ const editSchema = z.object({
 
 editRoutes.post("/api/edit/:id", async (c) => {
     const id = c.req.param("id");
-    const body = await c.req.json();
+    const body: unknown = await c.req.json();
     const knex = getKnex();
 
     const cell = await knex<Cell>("cells").where({ id }).first();
 
-    if (!cell) {
+    if (cell === undefined) {
         return c.text("Not found. That link's no good, get rid of it.", 404);
     }
 
@@ -31,7 +31,7 @@ editRoutes.post("/api/edit/:id", async (c) => {
 
     if (!parsed.success) {
         return c.json(
-            { type: "EditCellFailure", errors: parsed.error.flatten().fieldErrors } satisfies EditCellFailure,
+            { type: "EditCellFailure", errors: z.flattenError(parsed.error).fieldErrors } satisfies EditCellFailure,
             400,
         );
     }

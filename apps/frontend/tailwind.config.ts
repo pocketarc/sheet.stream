@@ -1,5 +1,8 @@
+import forms from "@tailwindcss/forms";
+import typography from "@tailwindcss/typography";
 import type { Config } from "tailwindcss";
 import plugin from "tailwindcss/plugin";
+import tailwindcssAnimate from "tailwindcss-animate";
 
 const config: Config = {
     darkMode: "class",
@@ -91,13 +94,13 @@ const config: Config = {
         },
     },
     plugins: [
-        require("tailwindcss-animate"),
-        require("@tailwindcss/forms"),
-        require("@tailwindcss/typography"),
-        plugin(({ matchUtilities, theme }) => {
+        tailwindcssAnimate,
+        forms,
+        typography,
+        plugin(({ matchUtilities, theme }): void => {
             matchUtilities(
                 {
-                    "text-shadow": (value) => ({
+                    "text-shadow": (value: string): { textShadow: string } => ({
                         textShadow: value,
                     }),
                 },

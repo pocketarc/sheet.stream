@@ -1,7 +1,7 @@
-export default function getBackendUrl() {
+export function getBackendUrl(): string {
     const backendUrl = process.env["NEXT_PUBLIC_BACKEND_URL"];
 
-    if (!backendUrl) {
+    if (backendUrl === undefined || backendUrl === "") {
         throw new Error("NEXT_PUBLIC_BACKEND_URL is not set.");
     }
 

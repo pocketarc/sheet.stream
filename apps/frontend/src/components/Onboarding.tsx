@@ -1,28 +1,34 @@
 "use client";
 
 import {
+    type Credentials,
+    isStoreCellResultSuccess,
     isStoreStreamDetailsResultFailure,
     isStoreStreamDetailsResultSuccess,
     type StoreStreamDetailsResult,
     type StoreStreamDetailsResultFailure,
 } from "@sheet-stream/shared";
-import type { Credentials } from "google-auth-library";
 import { useRouter } from "next/navigation";
 import type React from "react";
-import { useMemo, useState } from "react";
+import type { JSX } from "react";
+import { useId, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button.tsx";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card.tsx";
 import { Input } from "@/components/ui/input.tsx";
 import { Label } from "@/components/ui/label.tsx";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select.tsx";
-import getBackendUrl from "@/utils/getBackendUrl.ts";
+import { getBackendUrl } from "@/utils/getBackendUrl.ts";
 
 type Props = {
     token: Credentials;
 };
 
-export default function Onboarding({ token }: Props) {
+export function Onboarding({ token }: Props): JSX.Element {
     const router = useRouter();
+    const streamUrlId = useId();
+    const sheetsUrlId = useId();
+    const sheetSelectId = useId();
+    const sheetCellId = useId();
     const [sheetsUrl, setSheetsUrl] = useState("");
     const [sheetCell, setSheetCell] = useState("");
     const [sheetId, setSheetId] = useState<string | null>(null);
@@ -34,40 +40,53 @@ export default function Onboarding({ token }: Props) {
     } satisfies StoreStreamDetailsResultFailure);
     const [pending, setPending] = useState(false);
 
-    const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    const submitStreamDetails = async (): Promise<void> => {
+        const result = await fetch(`${getBackendUrl()}/api/signup`, {
+            method: "POST",
+            body: JSON.stringify({
+                token,
+                streamUrl,
+                sheetsUrl,
+            }),
+        });
+
+        const newState = (await result.json()) as StoreStreamDetailsResult;
+        setState(newState);
+
+        const firstSheet = isStoreStreamDetailsResultSuccess(newState) ? newState.sheets[0] : undefined;
+        if (firstSheet !== undefined) {
+            setSheetId(firstSheet.id);
+            setSheetName(firstSheet.name);
+        }
+    };
+
+    const submitChosenCell = async (signupId: string): Promise<void> => {
+        const result = await fetch(`${getBackendUrl()}/api/signup/sheet`, {
+            method: "POST",
+            body: JSON.stringify({
+                id: signupId,
+                sheetId,
+                sheetName,
+                sheetCell,
+            }),
+        });
+
+        const body = (await result.json()) as StoreStreamDetailsResult;
+        if (isStoreCellResultSuccess(body)) {
+            router.push(`/edit?id=${body.id}`);
+        } else {
+            setState(body);
+        }
+    };
+
+    const onSubmit = async (e: React.SubmitEvent<HTMLFormElement>): Promise<void> => {
         e.preventDefault();
         setPending(true);
         try {
             if (isStoreStreamDetailsResultFailure(state)) {
-                const result = await fetch(`${getBackendUrl()}/api/signup`, {
-                    method: "POST",
-                    body: JSON.stringify({
-                        token,
-                        streamUrl,
-                        sheetsUrl,
-                    }),
-                });
-
-                const newState: StoreStreamDetailsResult = await result.json();
-                setState(newState);
-
-                if (isStoreStreamDetailsResultSuccess(newState) && newState.sheets[0]) {
-                    setSheetId(newState.sheets[0].id);
-                    setSheetName(newState.sheets[0].name);
-                }
+                await submitStreamDetails();
             } else if (isStoreStreamDetailsResultSuccess(state)) {
-                const result = await fetch(`${getBackendUrl()}/api/signup/sheet`, {
-                    method: "POST",
-                    body: JSON.stringify({
-                        id: state.id,
-                        sheetId,
-                        sheetName,
-                        sheetCell,
-                    }),
-                });
-
-                const body = await result.json();
-                router.push(`/edit?id=${body.id}`);
+                await submitChosenCell(state.id);
             } else {
                 throw new Error(
                     "Invalid state; tried to submit form when the state wasn't either a StoreStreamDetailsResultFailure or a StoreStreamDetailsResultSuccess.",
@@ -84,12 +103,12 @@ export default function Onboarding({ token }: Props) {
         setSheetName(sheet.name);
     };
 
-    const defaultSheetValue = useMemo(() => {
-        if (isStoreStreamDetailsResultSuccess(state) && state.sheets[0]) {
-            return JSON.stringify(state.sheets[0]);
-        } else {
-            return JSON.stringify({ name: "", id: "" });
+    const defaultSheetValue = useMemo((): string => {
+        const firstSheet = isStoreStreamDetailsResultSuccess(state) ? state.sheets[0] : undefined;
+        if (firstSheet !== undefined) {
+            return JSON.stringify(firstSheet);
         }
+        return JSON.stringify({ name: "", id: "" });
     }, [state]);
 
     return (
@@ -106,30 +125,34 @@ export default function Onboarding({ token }: Props) {
                         <CardContent>
                             <div className="grid gap-4">
                                 <div className="grid gap-2">
-                                    <Label htmlFor="streamUrl">Streaming Platform URL</Label>
+                                    <Label htmlFor={streamUrlId}>Streaming Platform URL</Label>
                                     <Input
-                                        id="streamUrl"
+                                        id={streamUrlId}
                                         placeholder="https://twitch.tv/username"
                                         type="url"
                                         name="streamUrl"
                                         required
                                         value={streamUrl}
-                                        onChange={(e) => setStreamUrl(e.target.value)}
+                                        onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
+                                            setStreamUrl(e.target.value);
+                                        }}
                                     />
                                     <p className="text-sm text-haze-600">
                                         Enter the URL of your streaming channel (Twitch, YouTube, TikTok, etc.).
                                     </p>
                                 </div>
                                 <div className="grid gap-2">
-                                    <Label htmlFor="sheetsUrl">Google Sheets URL</Label>
+                                    <Label htmlFor={sheetsUrlId}>Google Sheets URL</Label>
                                     <Input
-                                        id="sheetsUrl"
+                                        id={sheetsUrlId}
                                         placeholder="https://docs.google.com/spreadsheets/d/..."
                                         type="url"
                                         name="sheetsUrl"
                                         required
                                         value={sheetsUrl}
-                                        onChange={(e) => setSheetsUrl(e.target.value)}
+                                        onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
+                                            setSheetsUrl(e.target.value);
+                                        }}
                                     />
                                     <p className="text-sm text-haze-600">
                                         Enter the URL of the Google Sheet where you want to store your streaming data.
@@ -159,9 +182,9 @@ export default function Onboarding({ token }: Props) {
                         <CardContent>
                             <div className="grid gap-4">
                                 <div className="grid gap-2">
-                                    <Label htmlFor="sheet">Sheet</Label>
+                                    <Label htmlFor={sheetSelectId}>Sheet</Label>
                                     <Select onValueChange={handleSheetChange} defaultValue={defaultSheetValue}>
-                                        <SelectTrigger id="sheet">
+                                        <SelectTrigger id={sheetSelectId}>
                                             <SelectValue placeholder="Select a sheet" />
                                         </SelectTrigger>
                                         <SelectContent>
@@ -177,15 +200,17 @@ export default function Onboarding({ token }: Props) {
                                     </p>
                                 </div>
                                 <div className="grid gap-2">
-                                    <Label htmlFor="sheetCell">Cell to display</Label>
+                                    <Label htmlFor={sheetCellId}>Cell to display</Label>
                                     <Input
-                                        id="sheetCell"
+                                        id={sheetCellId}
                                         placeholder="A1"
                                         type="text"
                                         name="sheetCell"
                                         required
                                         value={sheetCell}
-                                        onChange={(e) => setSheetCell(e.target.value)}
+                                        onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
+                                            setSheetCell(e.target.value);
+                                        }}
                                     />
                                 </div>
                             </div>

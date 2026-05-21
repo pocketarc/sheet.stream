@@ -4,8 +4,8 @@ import knexConfig from "../../knexfile.ts";
 
 let instance: Knex | undefined;
 
-export default function getKnex(): Knex {
-    if (!instance) {
+export function getKnex(): Knex {
+    if (instance === undefined) {
         instance = knex(knexConfig);
     }
 

@@ -1,10 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import getBackendUrl from "@/utils/getBackendUrl.ts";
+import type { JSX } from "react";
+import { getBackendUrl } from "@/utils/getBackendUrl.ts";
 import heroImage from "../../public/sheet-stream.png";
 
-export default function Hero() {
+export function Hero(): JSX.Element {
     return (
         <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48">
             <div className="mx-auto container px-4 md:px-6">

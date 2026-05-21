@@ -1,5 +1,5 @@
 import type { Cell, Spreadsheet } from "@sheet-stream/shared";
-import getKnex from "../db/getKnex.ts";
+import { getKnex } from "../db/getKnex.ts";
 import { getCellValues } from "./getCellValues.ts";
 import { logger } from "./logger.ts";
 
@@ -16,7 +16,7 @@ export async function refreshSpreadsheet(spreadsheet: Spreadsheet, spreadsheetCe
     for (const [cell, value] of Object.entries(cellValues)) {
         const cellRecord = spreadsheetCells.find((cellRecord) => cellRecord.cell === cell);
 
-        if (cellRecord) {
+        if (cellRecord !== undefined) {
             if (cellRecord.value !== value) {
                 logger.info("Updated cell value.", {
                     spreadsheet: spreadsheet.id,

@@ -1,4 +1,13 @@
-export const config = {
+type Config = {
+    port: number;
+    backendBaseUrl: string;
+    frontendBaseUrl: string;
+    googleClientId: string;
+    googleClientSecret: string;
+    isProduction: boolean;
+};
+
+export const config: Config = {
     port: Number(process.env["PORT"] ?? 3001),
     // Used to build the Google OAuth redirect URI; must be an authorized redirect
     // URI in the Google Cloud console (e.g. https://api.sheet.stream).

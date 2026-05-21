@@ -90,6 +90,9 @@
         "@types/react": "^19",
         "google-auth-library": "^10",
       },
+      "devDependencies": {
+        "typescript": "^6",
+      },
     },
   },
   "trustedDependencies": [

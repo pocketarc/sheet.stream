@@ -1,6 +1,8 @@
 import type { Credentials } from "google-auth-library";
 import type { CSSProperties } from "react";
 
+export type { Credentials } from "google-auth-library";
+
 export type Spreadsheet = {
     id: string;
     name: string;

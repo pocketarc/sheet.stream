@@ -1,10 +1,16 @@
 import type * as React from "react";
+import type { JSX } from "react";
 
 import { cn } from "@/utils/cn.ts";
 
-export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {}
+export type InputProps = React.InputHTMLAttributes<HTMLInputElement>;
 
-const Input = ({ className, type, ref, ...props }: InputProps & { ref?: React.RefObject<HTMLInputElement | null> }) => {
+const Input = ({
+    className,
+    type,
+    ref,
+    ...props
+}: InputProps & { ref?: React.RefObject<HTMLInputElement | null> }): JSX.Element => {
     return (
         <input
             type={type}

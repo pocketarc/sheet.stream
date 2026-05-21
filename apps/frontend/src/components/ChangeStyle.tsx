@@ -1,7 +1,8 @@
 "use client";
 
 import type React from "react";
-import { useEffect, useMemo, useState } from "react";
+import type { JSX } from "react";
+import { useEffect, useId, useMemo, useState } from "react";
 import FontPicker, { type FontToVariant } from "react-fontpicker-ts";
 import { Button } from "@/components/ui/button.tsx";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card.tsx";
@@ -11,7 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import "react-fontpicker-ts/dist/index.css";
 import type { ViewCellResponse } from "@sheet-stream/shared";
 import { calcAPCA } from "apca-w3";
-import getBackendUrl from "@/utils/getBackendUrl.ts";
+import { getBackendUrl } from "@/utils/getBackendUrl.ts";
 
 type Props = {
     id: string;
@@ -22,14 +23,56 @@ type Props = {
     initialCssValues: React.CSSProperties | null;
 };
 
-export default function ChangeStyle({
+type FontWeight = "100" | "200" | "300" | "400" | "500" | "600" | "700" | "800" | "900";
+
+const weightLabels = new Map<FontWeight, string>([
+    ["100", "Thin"],
+    ["200", "Extra Light"],
+    ["300", "Light"],
+    ["400", "Normal"],
+    ["500", "Medium"],
+    ["600", "Semi Bold"],
+    ["700", "Bold"],
+    ["800", "Extra Bold"],
+    ["900", "Black"],
+]);
+
+function isFontWeight(value: string): value is FontWeight {
+    return weightLabels.has(value as FontWeight);
+}
+
+function parseFontWeights(variants: FontToVariant): FontWeight[] {
+    const weights: FontWeight[] = [];
+
+    for (const variantData of variants.variants) {
+        if (typeof variantData !== "string") {
+            throw new Error(`Invalid variant data for font ${variants.fontName}`);
+        }
+
+        const weight = variantData.split(",")[1];
+
+        if (weight === undefined || !isFontWeight(weight)) {
+            throw new Error(`Invalid weight ${String(weight)} for font ${variants.fontName}`);
+        }
+
+        if (!weights.includes(weight)) {
+            weights.push(weight);
+        }
+    }
+
+    return weights;
+}
+
+export function ChangeStyle({
     id,
     spreadsheetName,
     sheetName,
     cell,
     initialCellValue,
     initialCssValues,
-}: Props) {
+}: Props): JSX.Element {
+    const textColorId = useId();
+    const textSizeId = useId();
     const [pending, setPending] = useState(false);
     let defaultSize = initialCssValues?.fontSize ?? "48";
     if (typeof defaultSize === "string") {
@@ -41,18 +84,6 @@ export default function ChangeStyle({
         defaultWeight = defaultWeight.toString();
     }
 
-    const allWeights = {
-        "100": "Thin",
-        "200": "Extra Light",
-        "300": "Light",
-        "400": "Normal",
-        "500": "Medium",
-        "600": "Semi Bold",
-        "700": "Bold",
-        "800": "Extra Bold",
-        "900": "Black",
-    } as const;
-
     const [textColor, setTextColor] = useState(initialCssValues?.color ?? "#ffffff");
     const [textSize, setTextSize] = useState(defaultSize);
     const [textWeight, setTextWeight] = useState(defaultWeight);
@@ -60,37 +91,19 @@ export default function ChangeStyle({
     const [font, setFont] = useState(initialCssValues?.fontFamily ?? "Pixelify Sans");
     const [cellValue, setCellValue] = useState(initialCellValue);
     const [saved, setSaved] = useState(false);
-    const [weights, setFontWeights] = useState<Array<keyof typeof allWeights>>([]);
+    const [weights, setFontWeights] = useState<FontWeight[]>([]);
     const [isDirty, setIsDirty] = useState(false);
 
-    const handleFontChange = (variants: FontToVariant) => {
+    const handleFontChange = (variants: FontToVariant): void => {
         if (variants.fontName !== font) {
             setIsDirty(true);
         }
 
         setFont(variants.fontName);
-        const newWeights: Array<keyof typeof allWeights> = [];
-        for (const variantData of variants.variants) {
-            if (typeof variantData === "string") {
-                const variant = variantData.split(",");
-                const weight = variant[1] as keyof typeof allWeights;
-
-                if (Object.keys(allWeights).includes(weight)) {
-                    if (!newWeights.includes(weight)) {
-                        newWeights.push(weight);
-                    }
-                } else {
-                    throw new Error(`Invalid weight ${weight} for font ${variants.fontName}`);
-                }
-            } else {
-                throw new Error(`Invalid variant data for font ${variants.fontName}`);
-            }
-        }
-
-        setFontWeights(newWeights);
+        setFontWeights(parseFontWeights(variants));
     };
 
-    const previewBackgroundColor = useMemo(() => {
+    const previewBackgroundColor = useMemo((): string => {
         const black = "rgb(32, 29, 37)";
         const white = "rgb(248, 248, 249)";
 
@@ -113,14 +126,14 @@ export default function ChangeStyle({
 
     const css = {
         color: textColor,
-        fontSize: `${textSize}px`,
+        fontSize: `${String(textSize)}px`,
         fontWeight: textWeight,
         fontStyle: textStyle,
         fontFamily: font,
         backgroundColor: previewBackgroundColor,
     };
 
-    const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    const onSubmit = async (e: React.SubmitEvent<HTMLFormElement>): Promise<void> => {
         e.preventDefault();
         setPending(true);
         try {
@@ -143,10 +156,10 @@ export default function ChangeStyle({
     };
 
     useEffect(() => {
-        const refresh = async () => {
+        const refresh = async (): Promise<void> => {
             const res = await fetch(`${getBackendUrl()}/api/cell/${id}`, {
                 headers: {
-                    Accept: "application/json",
+                    accept: "application/json",
                 },
             });
             const data = (await res.json()) as ViewCellResponse;
@@ -154,7 +167,9 @@ export default function ChangeStyle({
         };
 
         const interval = setInterval(refresh, 1000);
-        return () => clearInterval(interval);
+        return (): void => {
+            clearInterval(interval);
+        };
     }, [id]);
 
     const isDisabled = !isDirty || pending;
@@ -189,26 +204,26 @@ export default function ChangeStyle({
 
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-2">
-                                    <Label htmlFor="textColor">Text Color</Label>
+                                    <Label htmlFor={textColorId}>Text Color</Label>
                                     <Input
                                         defaultValue={textColor}
-                                        id="textColor"
+                                        id={textColorId}
                                         type="color"
-                                        onInput={(e) => {
+                                        onInput={(e: React.InputEvent<HTMLInputElement>): void => {
                                             setTextColor(e.currentTarget.value);
                                             setIsDirty(true);
                                         }}
                                     />
                                 </div>
                                 <div className="space-y-2">
-                                    <Label htmlFor="textSize">Text Size</Label>
+                                    <Label htmlFor={textSizeId}>Text Size</Label>
                                     <Input
                                         defaultValue={textSize}
-                                        id="textSize"
+                                        id={textSizeId}
                                         max="1000"
                                         min="1"
                                         type="number"
-                                        onInput={(e) => {
+                                        onInput={(e: React.InputEvent<HTMLInputElement>): void => {
                                             setTextSize(parseInt(e.currentTarget.value, 10));
                                             setIsDirty(true);
                                         }}
@@ -220,7 +235,7 @@ export default function ChangeStyle({
                                     <Label htmlFor="textWeight">Text Weight</Label>
                                     <Select
                                         defaultValue={textWeight}
-                                        onValueChange={(value) => {
+                                        onValueChange={(value: string): void => {
                                             setTextWeight(value);
                                             setIsDirty(true);
                                         }}
@@ -231,7 +246,7 @@ export default function ChangeStyle({
                                         <SelectContent>
                                             {weights.map((weight) => (
                                                 <SelectItem key={weight} value={weight}>
-                                                    {allWeights[weight]}
+                                                    {weightLabels.get(weight)}
                                                 </SelectItem>
                                             ))}
                                         </SelectContent>
@@ -241,7 +256,7 @@ export default function ChangeStyle({
                                     <Label htmlFor="textStyle">Text Style</Label>
                                     <Select
                                         defaultValue={textStyle}
-                                        onValueChange={(value) => {
+                                        onValueChange={(value: string): void => {
                                             setTextStyle(value);
                                             setIsDirty(true);
                                         }}

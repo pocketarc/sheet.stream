@@ -3,7 +3,7 @@ import { isBefore } from "date-fns/isBefore";
 import { subSeconds } from "date-fns/subSeconds";
 import { Hono } from "hono";
 import type { CSSProperties } from "react";
-import getKnex from "../db/getKnex.ts";
+import { getKnex } from "../db/getKnex.ts";
 import { jsToCss } from "../services/jsToCss.ts";
 import { refreshSpreadsheet } from "../services/refreshSpreadsheet.ts";
 
@@ -25,13 +25,13 @@ cellRoutes.get("/api/cell/:id/edit", async (c) => {
 
     const cell = await knex<Cell>("cells").where({ id }).first();
 
-    if (!cell) {
+    if (cell === undefined) {
         return c.text("Not found. That link's no good, get rid of it.", 404);
     }
 
     const spreadsheet = await knex<Spreadsheet>("spreadsheets").where({ id: cell.spreadsheet_id }).first();
 
-    if (!spreadsheet) {
+    if (spreadsheet === undefined) {
         return c.text("Not found. That link's no good, get rid of it.", 404);
     }
 
@@ -44,16 +44,16 @@ cellRoutes.get("/api/cell/:id", async (c) => {
 
     const cell = await knex<Cell>("cells").where({ id }).first();
 
-    if (!cell) {
+    if (cell === undefined) {
         return c.text("Not found. That link's no good, get rid of it.", 404);
     }
 
     const refreshThreshold = subSeconds(new Date(), 5);
 
-    if (!cell.last_refreshed_at || isBefore(cell.last_refreshed_at, refreshThreshold)) {
+    if (cell.last_refreshed_at === null || isBefore(cell.last_refreshed_at, refreshThreshold)) {
         const spreadsheet = await knex<Spreadsheet>("spreadsheets").where({ id: cell.spreadsheet_id }).first();
 
-        if (!spreadsheet) {
+        if (spreadsheet === undefined) {
             return c.text("Not found. That link's no good, get rid of it.", 404);
         }
 
@@ -67,11 +67,12 @@ cellRoutes.get("/api/cell/:id", async (c) => {
     const css = cell.css ?? defaultCss;
 
     const accept = c.req.header("accept");
-    if (accept?.includes("application/json")) {
+    const acceptsJson: boolean = accept?.includes("application/json") ?? false;
+    if (acceptsJson) {
         return c.json({ value, css } satisfies ViewCellResponse);
     }
 
-    if (!value) {
+    if (value === null || value === "") {
         value = "N/A";
     }
 
