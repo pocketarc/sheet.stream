@@ -1,16 +1,20 @@
 {
-    "name": "sheet-stream",
-    "version": "0.1.0",
-    "private": true,
-    "workspaces": [
-        "apps/*",
-        "packages/*"
-    ],
-    "scripts": {
-        "dev:frontend": "bun run --cwd apps/frontend dev",
-        "build:frontend": "bun run --cwd apps/frontend build",
-        "dev:backend": "bun run --cwd apps/backend dev",
-        "jobs:backend": "bun run --cwd apps/backend jobs",
-        "migrate": "bun run --cwd apps/backend migrate"
-    }
+  "name": "sheet-stream",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:frontend": "bun run --cwd apps/frontend dev",
+    "build:frontend": "bun run --cwd apps/frontend build",
+    "dev:backend": "bun run --cwd apps/backend dev",
+    "jobs:backend": "bun run --cwd apps/backend jobs",
+    "migrate": "bun run --cwd apps/backend migrate"
+  },
+  "trustedDependencies": [
+    "@sentry/cli",
+    "unrs-resolver"
+  ]
 }

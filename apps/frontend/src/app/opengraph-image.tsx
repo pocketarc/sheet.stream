@@ -8,6 +8,9 @@ export const size = {
 
 export const contentType = "image/png";
 
+// Required for `output: "export"` — the OG image is generated once at build.
+export const dynamic = "force-static";
+
 export default async function Image() {
     const pixelifyUrl = "https://fonts.gstatic.com/s/pixelifysans/v1/CHy2V-3HFUT7aC4iv1TxGDR9DHEserHN25py2TTb0H1bb5Jag3GU.woff";
     const interUrl = "https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfMZs.woff";

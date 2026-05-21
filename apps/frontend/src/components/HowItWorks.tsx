@@ -1,4 +1,3 @@
-import React from "react";
 import getBackendUrl from "@/utils/getBackendUrl";
 
 export default function HowItWorks() {

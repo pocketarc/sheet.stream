@@ -1,4 +1,3 @@
-import React from "react";
 import { InfoCircledIcon } from "@radix-ui/react-icons";
 
 export default function Page() {

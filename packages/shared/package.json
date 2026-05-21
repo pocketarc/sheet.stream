@@ -9,7 +9,7 @@
         ".": "./src/types.ts"
     },
     "dependencies": {
-        "@types/react": "^18",
-        "google-auth-library": "^9"
+        "@types/react": "^19",
+        "google-auth-library": "^10"
     }
 }

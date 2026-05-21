@@ -3,7 +3,6 @@
 import Image from "next/image";
 import getBackendUrl from "@/utils/getBackendUrl";
 import heroImage from "../../public/sheet-stream.png";
-import React from "react";
 
 export default function Hero() {
     return (

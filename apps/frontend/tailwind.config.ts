@@ -2,7 +2,7 @@ import type { Config } from "tailwindcss";
 import plugin from "tailwindcss/plugin";
 
 const config: Config = {
-    darkMode: ["class"],
+    darkMode: "class",
     content: ["./src/pages/**/*.{js,ts,jsx,tsx,mdx}", "./src/components/**/*.{js,ts,jsx,tsx,mdx}", "./src/app/**/*.{js,ts,jsx,tsx,mdx}"],
     prefix: "",
     theme: {
@@ -97,7 +97,6 @@ const config: Config = {
                         textShadow: value,
                     }),
                 },
-                // @ts-expect-error - This seems to be a bug in the tailwindcss types.
                 { values: theme("textShadow") },
             );
         }),
