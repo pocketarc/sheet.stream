@@ -1,0 +1,14 @@
+import { initializeFaro } from "@grafana/faro-web-sdk";
+
+// Grafana Faro browser SDK — only initialised when a collector URL (the
+// Alloy Faro receiver, or Grafana Cloud) is configured.
+const faroUrl = process.env["NEXT_PUBLIC_FARO_URL"];
+
+if (faroUrl) {
+    initializeFaro({
+        url: faroUrl,
+        app: {
+            name: "sheet-stream-frontend",
+        },
+    });
+}

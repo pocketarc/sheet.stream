@@ -14,7 +14,9 @@
     },
     "dependencies": {
         "@hono/node-server": "^2",
-        "@sentry/node": "^10",
+        "@opentelemetry/auto-instrumentations-node": "^0.76.0",
+        "@opentelemetry/exporter-trace-otlp-http": "^0.218.0",
+        "@opentelemetry/sdk-node": "^0.218.0",
         "@sheet-stream/shared": "workspace:*",
         "date-fns": "^4",
         "gaxios": "^7",

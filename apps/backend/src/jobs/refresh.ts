@@ -1,3 +1,4 @@
+import "../otel";
 import { subSeconds } from "date-fns/subSeconds";
 import type { Cell, Spreadsheet } from "@sheet-stream/shared";
 import getKnex from "../db/getKnex";

@@ -1,16 +1,16 @@
 "use client";
 
-import * as Sentry from "@sentry/nextjs";
+import { faro } from "@grafana/faro-web-sdk";
 import NextError from "next/error";
 import { useEffect } from "react";
 
 export default function GlobalError({ error }: { error: Error & { digest?: string } }) {
     useEffect(() => {
-        Sentry.captureException(error);
+        faro.api?.pushError(error);
     }, [error]);
 
     return (
-        <html>
+        <html lang="en">
             <body>
                 <NextError statusCode={400} />
             </body>
