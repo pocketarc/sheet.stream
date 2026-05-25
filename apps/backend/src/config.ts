@@ -7,8 +7,14 @@ type Config = {
     isProduction: boolean;
 };
 
+const rawPort = process.env["PORT"] ?? "3001";
+const port = Number.parseInt(rawPort, 10);
+if (!Number.isInteger(port) || port < 1 || port > 65535) {
+    throw new Error(`Invalid PORT: ${rawPort}`);
+}
+
 export const config: Config = {
-    port: Number(process.env["PORT"] ?? 3001),
+    port,
     // Used to build the Google OAuth redirect URI; must be an authorized redirect
     // URI in the Google Cloud console (e.g. https://api.sheet.stream).
     backendBaseUrl: process.env["BACKEND_BASE_URL"] ?? "http://localhost:3001",
