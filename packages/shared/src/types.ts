@@ -51,7 +51,6 @@ export type StoreCellResultSuccess = {
 export type EditCellFailure = {
     type: "EditCellFailure";
     errors: {
-        id?: string[];
         css?: string[];
     };
 };

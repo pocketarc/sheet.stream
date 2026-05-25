@@ -6,7 +6,6 @@ import { getKnex } from "../db/getKnex.ts";
 export const editRoutes = new Hono();
 
 const editSchema = z.object({
-    id: z.string(),
     css: z.object({
         color: z.string(),
         fontSize: z.string(),
