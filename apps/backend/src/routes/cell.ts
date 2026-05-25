@@ -42,7 +42,7 @@ cellRoutes.get("/api/cell/:id", async (c) => {
     const id = c.req.param("id");
     const knex = getKnex();
 
-    const cell = await knex<Cell>("cells").where({ id }).first();
+    let cell = await knex<Cell>("cells").where({ id }).first();
 
     if (cell === undefined) {
         return c.text("Not found. That link's no good, get rid of it.", 404);
@@ -58,6 +58,11 @@ cellRoutes.get("/api/cell/:id", async (c) => {
         }
 
         await refreshSpreadsheet(spreadsheet, [cell]);
+
+        const refreshed = await knex<Cell>("cells").where({ id }).first();
+        if (refreshed !== undefined) {
+            cell = refreshed;
+        }
     }
 
     // Update the last accessed time.
