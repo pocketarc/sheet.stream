@@ -1,4 +1,13 @@
-import type { CSSProperties } from "react";
+// Subset of CSS properties the cell editor exposes. Kept framework-agnostic so
+// `packages/shared` doesn't pull in React types; callers convert to/from
+// React.CSSProperties at the frontend boundary.
+export type CellCss = {
+    color?: string;
+    fontSize?: string;
+    fontWeight?: string;
+    fontStyle?: string;
+    fontFamily?: string;
+};
 
 // Wire-format shape for the OAuth credentials we shuttle between the backend and
 // the frontend. Structurally compatible with google-auth-library's `Credentials`
@@ -28,7 +37,7 @@ export type Cell = {
     sheet_id: string;
     sheet_name: string;
     cell: string;
-    css: CSSProperties | null;
+    css: CellCss | null;
     value: string | null;
     created_at: Date;
     updated_at: Date;
@@ -71,7 +80,7 @@ export type EditCellSuccess = {
 
 export type ViewCellResponse = {
     value: string | null;
-    css: CSSProperties | null;
+    css: CellCss | null;
 };
 
 export type CellEditResponse = {

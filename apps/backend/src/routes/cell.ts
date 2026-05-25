@@ -1,15 +1,14 @@
-import type { Cell, CellEditResponse, Spreadsheet, ViewCellResponse } from "@sheet-stream/shared";
+import type { Cell, CellCss, CellEditResponse, Spreadsheet, ViewCellResponse } from "@sheet-stream/shared";
 import { isBefore } from "date-fns/isBefore";
 import { subSeconds } from "date-fns/subSeconds";
 import { Hono } from "hono";
-import type { CSSProperties } from "react";
 import { getKnex } from "../db/getKnex.ts";
 import { jsToCss } from "../services/jsToCss.ts";
 import { refreshSpreadsheet } from "../services/refreshSpreadsheet.ts";
 
 export const cellRoutes = new Hono();
 
-const defaultCss: CSSProperties = {
+const defaultCss: CellCss = {
     color: "white",
     fontFamily: "Pixelify Sans",
     fontSize: "48px",
