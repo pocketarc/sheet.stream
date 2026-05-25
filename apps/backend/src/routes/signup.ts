@@ -115,7 +115,8 @@ signupRoutes.post("/api/signup", async (c) => {
     try {
         const sheets = google.sheets({ version: "v4", auth: oauth2Client });
 
-        const sheetId = parsedFormData.data.sheetsUrl.split("/")[5];
+        const match = /\/spreadsheets\/d\/([a-zA-Z0-9_-]+)/.exec(parsedFormData.data.sheetsUrl);
+        const sheetId = match?.[1];
 
         if (sheetId === undefined || sheetId === "") {
             return c.json({
