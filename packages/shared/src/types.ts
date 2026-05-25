@@ -83,8 +83,11 @@ export type ViewCellResponse = {
     css: CellCss | null;
 };
 
+// Only the cell fields the edit page actually consumes are part of the wire
+// contract. `isCellEditResponse` validates exactly this subset, so claiming the
+// full `Cell` here would be a lie at the type boundary.
 export type CellEditResponse = {
-    cell: Cell;
+    cell: Pick<Cell, "id" | "cell" | "sheet_name" | "value" | "css">;
     spreadsheetName: string;
 };
 
