@@ -15,6 +15,12 @@ if (
     throw new Error("DB_USERNAME, DB_PASSWORD, DB_DATABASE, DB_HOST, or DB_PORT is not defined.");
 }
 
+const rawDbPort = process.env["DB_PORT"];
+const dbPort = Number.parseInt(rawDbPort, 10);
+if (!Number.isInteger(dbPort) || dbPort < 1 || dbPort > 65535) {
+    throw new Error(`Invalid DB_PORT: ${rawDbPort}`);
+}
+
 const config: Knex.Config = {
     client: "mysql2",
     connection: {
@@ -22,7 +28,7 @@ const config: Knex.Config = {
         password: process.env["DB_PASSWORD"],
         database: process.env["DB_DATABASE"],
         host: process.env["DB_HOST"],
-        port: Number(process.env["DB_PORT"]),
+        port: dbPort,
         // Interpret all DB datetimes as UTC so mysql2 round-trips TIMESTAMP
         // columns consistently (the server runs --default-time-zone=+00:00).
         timezone: "Z",
