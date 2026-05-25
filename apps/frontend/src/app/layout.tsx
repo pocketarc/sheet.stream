@@ -53,13 +53,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }):
                     <main className="flex-1 flex flex-col">{children}</main>
                     <Footer />
                 </div>
+                <Script
+                    src={`${baseUrl}/js/script.js`}
+                    strategy="afterInteractive"
+                    data-domain={domain}
+                    data-api="/api/event"
+                />
             </body>
-            <Script
-                src={`${baseUrl}/js/script.js`}
-                strategy="afterInteractive"
-                data-domain={domain}
-                data-api="/api/event"
-            />
         </html>
     );
 }
