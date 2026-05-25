@@ -15,8 +15,8 @@ if (
     throw new Error("DB_USERNAME, DB_PASSWORD, DB_DATABASE, DB_HOST, or DB_PORT is not defined.");
 }
 
-const rawDbPort = process.env["DB_PORT"];
-const dbPort = Number.parseInt(rawDbPort, 10);
+const rawDbPort: string = process.env["DB_PORT"];
+const dbPort: number = Number.parseInt(rawDbPort, 10);
 if (!Number.isInteger(dbPort) || dbPort < 1 || dbPort > 65535) {
     throw new Error(`Invalid DB_PORT: ${rawDbPort}`);
 }

@@ -12,7 +12,7 @@ export const jsToCss = (js: CSSProperties): string => {
             continue;
         }
 
-        cssString += `${toKebabCase(key)}: ${value};\n`;
+        cssString += `${toKebabCase(key)}: ${String(value)};\n`;
     }
 
     return cssString;

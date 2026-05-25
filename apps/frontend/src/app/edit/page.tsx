@@ -7,6 +7,19 @@ import { Suspense, useEffect, useState } from "react";
 import { ChangeStyle } from "@/components/ChangeStyle.tsx";
 import { getBackendUrl } from "@/utils/getBackendUrl.ts";
 
+async function fetchCellEdit(id: string, signal: AbortSignal): Promise<CellEditResponse | null> {
+    try {
+        const res = await fetch(`${getBackendUrl()}/api/cell/${id}/edit`, { signal });
+        if (!res.ok) {
+            return null;
+        }
+        const body: unknown = await res.json();
+        return isCellEditResponse(body) ? body : null;
+    } catch {
+        return null;
+    }
+}
+
 function EditPage(): JSX.Element {
     const searchParams = useSearchParams();
     const id = searchParams.get("id");
@@ -19,37 +32,21 @@ function EditPage(): JSX.Element {
             return;
         }
 
-        let cancelled = false;
+        const controller = new AbortController();
 
-        void (async (): Promise<void> => {
-            try {
-                const res = await fetch(`${getBackendUrl()}/api/cell/${id}/edit`);
-
-                if (cancelled) {
-                    return;
-                }
-
-                if (!res.ok) {
-                    setError(true);
-                    return;
-                }
-
-                const body: unknown = await res.json();
-                if (!isCellEditResponse(body)) {
-                    setError(true);
-                    return;
-                }
-
-                setData(body);
-            } catch {
-                if (!cancelled) {
-                    setError(true);
-                }
+        void fetchCellEdit(id, controller.signal).then((result) => {
+            if (controller.signal.aborted) {
+                return;
             }
-        })();
+            if (result === null) {
+                setError(true);
+            } else {
+                setData(result);
+            }
+        });
 
         return (): void => {
-            cancelled = true;
+            controller.abort();
         };
     }, [id]);
 

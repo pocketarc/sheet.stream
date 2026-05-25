@@ -7,8 +7,8 @@ type Config = {
     isProduction: boolean;
 };
 
-const rawPort = process.env["PORT"] ?? "3001";
-const port = Number.parseInt(rawPort, 10);
+const rawPort: string = process.env["PORT"] ?? "3001";
+const port: number = Number.parseInt(rawPort, 10);
 if (!Number.isInteger(port) || port < 1 || port > 65535) {
     throw new Error(`Invalid PORT: ${rawPort}`);
 }
