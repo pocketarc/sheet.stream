@@ -40,17 +40,28 @@ export function Onboarding({ token }: Props): JSX.Element {
     } satisfies StoreStreamDetailsResultFailure);
     const [pending, setPending] = useState(false);
 
-    const submitStreamDetails = async (): Promise<void> => {
-        const result = await fetch(`${getBackendUrl()}/api/signup`, {
-            method: "POST",
-            body: JSON.stringify({
-                token,
-                streamUrl,
-                sheetsUrl,
-            }),
-        });
+    const networkErrorState: StoreStreamDetailsResultFailure = {
+        type: "StoreStreamDetailsResultFailure",
+        errors: { token: ["Network error. Please try again."] },
+    };
 
-        const newState = (await result.json()) as StoreStreamDetailsResult;
+    const submitStreamDetails = async (): Promise<void> => {
+        let newState: StoreStreamDetailsResult;
+        try {
+            const result = await fetch(`${getBackendUrl()}/api/signup`, {
+                method: "POST",
+                body: JSON.stringify({
+                    token,
+                    streamUrl,
+                    sheetsUrl,
+                }),
+            });
+            newState = (await result.json()) as StoreStreamDetailsResult;
+        } catch {
+            setState(networkErrorState);
+            return;
+        }
+
         setState(newState);
 
         const firstSheet = isStoreStreamDetailsResultSuccess(newState) ? newState.sheets[0] : undefined;
@@ -61,17 +72,23 @@ export function Onboarding({ token }: Props): JSX.Element {
     };
 
     const submitChosenCell = async (signupId: string): Promise<void> => {
-        const result = await fetch(`${getBackendUrl()}/api/signup/sheet`, {
-            method: "POST",
-            body: JSON.stringify({
-                id: signupId,
-                sheetId,
-                sheetName,
-                sheetCell,
-            }),
-        });
+        let body: StoreStreamDetailsResult;
+        try {
+            const result = await fetch(`${getBackendUrl()}/api/signup/sheet`, {
+                method: "POST",
+                body: JSON.stringify({
+                    id: signupId,
+                    sheetId,
+                    sheetName,
+                    sheetCell,
+                }),
+            });
+            body = (await result.json()) as StoreStreamDetailsResult;
+        } catch {
+            setState(networkErrorState);
+            return;
+        }
 
-        const body = (await result.json()) as StoreStreamDetailsResult;
         if (isStoreCellResultSuccess(body)) {
             router.push(`/edit?id=${body.id}`);
         } else {
