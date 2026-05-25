@@ -37,7 +37,7 @@ signupSheetRoutes.post("/api/signup/sheet", async (c) => {
         return c.json(
             {
                 type: "StoreCellResultFailure",
-                errors: { sheetId: ["Sheet not found. Please start again."] },
+                errors: { sheetId: ["Spreadsheet not found. Please start again."] },
             } satisfies StoreCellResultFailure,
             400,
         );
