@@ -14,10 +14,11 @@ RUN bun install
 
 FROM base AS runner
 ENV NODE_ENV=production
-COPY --from=deps /app/node_modules ./node_modules
-COPY package.json ./package.json
-COPY packages/shared ./packages/shared
-COPY apps/backend ./apps/backend
+COPY --from=deps --chown=node:node /app/node_modules ./node_modules
+COPY --chown=node:node package.json ./package.json
+COPY --chown=node:node packages/shared ./packages/shared
+COPY --chown=node:node apps/backend ./apps/backend
 WORKDIR /app/apps/backend
+USER node
 EXPOSE 3001
 CMD ["bun", "run", "start"]
