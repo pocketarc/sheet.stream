@@ -93,7 +93,10 @@ cellRoutes.get("/api/cell/:id", async (c) => {
     const fontFamily = encodeURIComponent(css.fontFamily ?? "Pixelify Sans");
     const fontWeight = encodeURIComponent(css.fontWeight ?? "700");
 
-    const html = `<head><meta http-equiv="refresh" content="1"><link href="https://fonts.googleapis.com/css2?family=${fontFamily}:wght@${fontWeight}&display=swap" rel="stylesheet"></head><div style="${escapeHtml(jsToCss(css))}">${escapeHtml(value)}</div>`;
+    // Only `value` originates from Google Sheets and needs HTML escaping. The CSS
+    // comes from a zod-validated edit form set by the same user viewing the page,
+    // and escaping it would mangle the inline style attribute.
+    const html = `<head><meta http-equiv="refresh" content="1"><link href="https://fonts.googleapis.com/css2?family=${fontFamily}:wght@${fontWeight}&display=swap" rel="stylesheet"></head><div style="${jsToCss(css)}">${escapeHtml(value)}</div>`;
 
     return c.html(html);
 });
