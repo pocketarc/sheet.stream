@@ -148,10 +148,24 @@ export function isCellEditResponse(value: unknown): value is CellEditResponse {
         return false;
     }
     const candidate = value as { cell?: unknown; spreadsheetName?: unknown };
+    if (typeof candidate.spreadsheetName !== "string") {
+        return false;
+    }
+    if (typeof candidate.cell !== "object" || candidate.cell === null) {
+        return false;
+    }
+    const cell = candidate.cell as {
+        id?: unknown;
+        cell?: unknown;
+        sheet_name?: unknown;
+        value?: unknown;
+        css?: unknown;
+    };
     return (
-        typeof candidate.spreadsheetName === "string" &&
-        typeof candidate.cell === "object" &&
-        candidate.cell !== null &&
-        typeof (candidate.cell as { id?: unknown }).id === "string"
+        typeof cell.id === "string" &&
+        typeof cell.cell === "string" &&
+        typeof cell.sheet_name === "string" &&
+        (cell.value === null || typeof cell.value === "string") &&
+        (cell.css === null || (typeof cell.css === "object" && cell.css !== null))
     );
 }
