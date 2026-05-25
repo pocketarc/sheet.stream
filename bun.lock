@@ -86,10 +86,8 @@
     "packages/shared": {
       "name": "@sheet-stream/shared",
       "version": "0.0.0",
-      "dependencies": {
-        "@types/react": "^19",
-      },
       "devDependencies": {
+        "@types/react": "^19",
         "typescript": "^6",
       },
     },
