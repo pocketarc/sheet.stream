@@ -17,6 +17,15 @@ const defaultCss: CSSProperties = {
     fontStyle: "normal",
 };
 
+function escapeHtml(value: string): string {
+    return value
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+}
+
 // Data for the frontend edit page; replaces the server-side data fetch the
 // Next.js /edit/[id] page used to do directly against the database.
 cellRoutes.get("/api/cell/:id/edit", async (c) => {
@@ -84,7 +93,7 @@ cellRoutes.get("/api/cell/:id", async (c) => {
     const fontFamily = encodeURIComponent(css.fontFamily ?? "Pixelify Sans");
     const fontWeight = encodeURIComponent(css.fontWeight ?? "700");
 
-    const html = `<head><meta http-equiv="refresh" content="1"><link href="https://fonts.googleapis.com/css2?family=${fontFamily}:wght@${fontWeight}&display=swap" rel="stylesheet"></head><div style="${jsToCss(css)}">${value}</div>`;
+    const html = `<head><meta http-equiv="refresh" content="1"><link href="https://fonts.googleapis.com/css2?family=${fontFamily}:wght@${fontWeight}&display=swap" rel="stylesheet"></head><div style="${escapeHtml(jsToCss(css))}">${escapeHtml(value)}</div>`;
 
     return c.html(html);
 });
