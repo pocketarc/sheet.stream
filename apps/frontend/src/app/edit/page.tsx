@@ -1,6 +1,6 @@
 "use client";
 
-import type { CellEditResponse } from "@sheet-stream/shared";
+import { type CellEditResponse, isCellEditResponse } from "@sheet-stream/shared";
 import { useSearchParams } from "next/navigation";
 import type { JSX } from "react";
 import { Suspense, useEffect, useState } from "react";
@@ -22,18 +22,30 @@ function EditPage(): JSX.Element {
         let cancelled = false;
 
         void (async (): Promise<void> => {
-            const res = await fetch(`${getBackendUrl()}/api/cell/${id}/edit`);
+            try {
+                const res = await fetch(`${getBackendUrl()}/api/cell/${id}/edit`);
 
-            if (cancelled) {
-                return;
+                if (cancelled) {
+                    return;
+                }
+
+                if (!res.ok) {
+                    setError(true);
+                    return;
+                }
+
+                const body: unknown = await res.json();
+                if (!isCellEditResponse(body)) {
+                    setError(true);
+                    return;
+                }
+
+                setData(body);
+            } catch {
+                if (!cancelled) {
+                    setError(true);
+                }
             }
-
-            if (!res.ok) {
-                setError(true);
-                return;
-            }
-
-            setData((await res.json()) as CellEditResponse);
         })();
 
         return (): void => {

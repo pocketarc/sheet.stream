@@ -91,3 +91,16 @@ export function isStoreStreamDetailsResultFailure(
 ): result is StoreStreamDetailsResultFailure {
     return result.type === "StoreStreamDetailsResultFailure";
 }
+
+export function isCellEditResponse(value: unknown): value is CellEditResponse {
+    if (typeof value !== "object" || value === null) {
+        return false;
+    }
+    const candidate = value as { cell?: unknown; spreadsheetName?: unknown };
+    return (
+        typeof candidate.spreadsheetName === "string" &&
+        typeof candidate.cell === "object" &&
+        candidate.cell !== null &&
+        typeof (candidate.cell as { id?: unknown }).id === "string"
+    );
+}
