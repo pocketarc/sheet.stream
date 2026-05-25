@@ -146,6 +146,20 @@ export function isStoreStreamDetailsResult(value: unknown): value is StoreStream
     }
 }
 
+const cellCssKeys = new Set<string>(["color", "fontSize", "fontWeight", "fontStyle", "fontFamily"]);
+
+function isCellCssOrNull(value: unknown): value is CellCss | null {
+    if (value === null) {
+        return true;
+    }
+    if (typeof value !== "object") {
+        return false;
+    }
+    return Object.entries(value).every(
+        ([key, val]) => cellCssKeys.has(key) && (typeof val === "string" || val === undefined),
+    );
+}
+
 export function isCellEditResponse(value: unknown): value is CellEditResponse {
     if (typeof value !== "object" || value === null) {
         return false;
@@ -169,6 +183,6 @@ export function isCellEditResponse(value: unknown): value is CellEditResponse {
         typeof cell.cell === "string" &&
         typeof cell.sheet_name === "string" &&
         (cell.value === null || typeof cell.value === "string") &&
-        (cell.css === null || (typeof cell.css === "object" && cell.css !== null))
+        isCellCssOrNull(cell.css)
     );
 }
