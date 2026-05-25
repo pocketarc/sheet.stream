@@ -7,12 +7,12 @@ function toKebabCase(key: string): string {
 export const jsToCss = (js: CSSProperties): string => {
     let cssString = "";
 
-    for (const [key, value] of Object.entries(js) as [string, string | number | undefined][]) {
-        if (value === undefined) {
+    for (const [key, value] of Object.entries(js)) {
+        if (typeof value !== "string" && typeof value !== "number") {
             continue;
         }
 
-        cssString += `${toKebabCase(key)}: ${String(value)};\n`;
+        cssString += `${toKebabCase(key)}: ${value};\n`;
     }
 
     return cssString;
