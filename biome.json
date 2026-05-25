@@ -134,6 +134,7 @@
         },
         {
             "includes": [
+                "apps/frontend/next-env.d.ts",
                 "apps/frontend/src/app/layout.tsx",
                 "apps/frontend/src/app/edit/page.tsx",
                 "apps/frontend/src/app/onboarding/page.tsx"
