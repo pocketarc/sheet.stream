@@ -1,0 +1,38 @@
+{
+    "name": "@sheet-stream/backend",
+    "version": "0.1.0",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "dev": "env-cmd -f .env tsx watch src/index.ts",
+        "start": "NODE_ENV=production tsx src/index.ts",
+        "jobs": "env-cmd -f .env tsx watch src/jobs/refresh.ts",
+        "jobs-prod": "NODE_ENV=production tsx src/jobs/refresh.ts",
+        "migrate": "env-cmd -f .env tsx ../../node_modules/.bin/knex migrate:latest",
+        "migrate:prod": "tsx ../../node_modules/.bin/knex migrate:latest",
+        "typecheck": "tsc --noEmit"
+    },
+    "dependencies": {
+        "@hono/node-server": "^2",
+        "@opentelemetry/auto-instrumentations-node": "^0.76.0",
+        "@opentelemetry/exporter-trace-otlp-http": "^0.218.0",
+        "@opentelemetry/sdk-node": "^0.218.0",
+        "@sheet-stream/shared": "workspace:*",
+        "date-fns": "^4",
+        "gaxios": "^7",
+        "googleapis": "^172",
+        "hono": "^4",
+        "knex": "^3.2.10",
+        "mysql2": "^3",
+        "typeid-js": "^1.2.0",
+        "winston": "^3.19.0",
+        "zod": "^4.4.3"
+    },
+    "devDependencies": {
+        "@types/node": "^25",
+        "@types/react": "^19",
+        "env-cmd": "^11",
+        "tsx": "^4.22.3",
+        "typescript": "^6"
+    }
+}

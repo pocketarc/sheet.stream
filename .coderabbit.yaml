@@ -1,0 +1,57 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+language: "en-US"
+early_access: false
+reviews:
+    profile: "assertive"
+    request_changes_workflow: false
+    high_level_summary: true
+    poem: false
+    review_status: true
+    review_details: true
+    collapse_walkthrough: true
+    sequence_diagrams: true
+    auto_review:
+        enabled: true
+        drafts: false
+    path_filters:
+        - "!**/node_modules/**"
+        - "!bun.lock"
+        - "!**/.next/**"
+        - "!apps/frontend/out/**"
+    path_instructions:
+        - path: "apps/frontend/**"
+          instructions: >
+              Next.js static-export frontend, deployed to Cloudflare Pages.
+              React + TypeScript + Tailwind. There is no server code here — all
+              dynamic behaviour goes through the Hono backend, reached via
+              NEXT_PUBLIC_BACKEND_URL.
+        - path: "apps/backend/**"
+          instructions: >
+              Hono API server plus a polling refresh worker, deployed to VMs.
+              Talks to MySQL through Knex (mysql2 driver). JSON columns must be
+              JSON.stringify'd on write. Prefer runtime guards over type casts
+              or ts-ignore comments.
+        - path: "packages/shared/**"
+          instructions: >
+              TypeScript types shared by the frontend and backend. Keep it
+              dependency-light and framework-agnostic.
+    tools:
+        gitleaks:
+            enabled: true
+        trufflehog:
+            enabled: true
+        shellcheck:
+            enabled: true
+        yamllint:
+            enabled: true
+        markdownlint:
+            enabled: true
+        biome:
+            enabled: true
+        eslint:
+            enabled: true
+knowledge_base:
+    code_guidelines:
+        enabled: true
+chat:
+    auto_reply: true

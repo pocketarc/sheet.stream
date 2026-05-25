@@ -1,0 +1,9 @@
+name = "sheet-stream"
+compatibility_date = "2026-05-20"
+compatibility_flags = ["nodejs_compat"]
+send_metrics = false
+workers_dev = false
+
+[assets]
+directory = "out"
+not_found_handling = "404-page"

@@ -1,0 +1,151 @@
+{
+    "$schema": "https://biomejs.dev/schemas/2.4.15/schema.json",
+    "vcs": {
+        "enabled": true,
+        "clientKind": "git",
+        "useIgnoreFile": true
+    },
+    "files": {
+        "ignoreUnknown": true,
+        "includes": ["**"]
+    },
+    "formatter": {
+        "enabled": true,
+        "useEditorconfig": true,
+        "formatWithErrors": true,
+        "indentStyle": "space",
+        "indentWidth": 4,
+        "lineEnding": "lf",
+        "lineWidth": 120
+    },
+    "assist": {
+        "actions": {
+            "source": {
+                "organizeImports": "on"
+            }
+        }
+    },
+    "linter": {
+        "enabled": true,
+        "domains": {
+            "next": "all",
+            "react": "all",
+            "project": "all",
+            "types": "all"
+        },
+        "rules": {
+            "complexity": {
+                "noExcessiveCognitiveComplexity": {
+                    "level": "error",
+                    "options": { "maxAllowedComplexity": 15 }
+                },
+                "useLiteralKeys": { "level": "off" }
+            },
+            "suspicious": {
+                "noConsole": {
+                    "level": "error",
+                    "options": { "allow": ["error", "warn"] }
+                },
+                "noAlert": "error"
+            },
+            "correctness": {
+                "noUndeclaredVariables": "off"
+            },
+            "style": {
+                "noProcessEnv": "error",
+                "useComponentExportOnlyModules": {
+                    "level": "error",
+                    "options": { "allowConstantExport": true }
+                },
+                "noUnusedTemplateLiteral": { "level": "error", "fix": "safe" },
+                "noDefaultExport": "error",
+                "useBlockStatements": { "level": "error", "fix": "safe" },
+                "useNamingConvention": {
+                    "level": "warn",
+                    "options": {
+                        "strictCase": false,
+                        "conventions": [
+                            { "selector": { "kind": "typeProperty" }, "formats": ["snake_case", "camelCase"] },
+                            { "selector": { "kind": "objectLiteralProperty" }, "formats": ["snake_case", "camelCase"] },
+                            { "selector": { "kind": "classProperty" }, "formats": ["snake_case", "camelCase"] },
+                            { "selector": { "kind": "classGetter" }, "formats": ["snake_case", "camelCase"] }
+                        ]
+                    }
+                }
+            },
+            "nursery": {
+                "useExplicitType": "error"
+            }
+        }
+    },
+    "javascript": {
+        "formatter": { "quoteProperties": "preserve" }
+    },
+    "css": {
+        "parser": { "tailwindDirectives": true }
+    },
+    "overrides": [
+        {
+            "includes": [
+                "apps/frontend/src/app/**",
+                "**/next.config.ts",
+                "**/tailwind.config.ts",
+                "**/postcss.config.mjs",
+                "**/knexfile.ts",
+                "**/eslint.config.mjs"
+            ],
+            "linter": {
+                "rules": {
+                    "style": {
+                        "noDefaultExport": "off",
+                        "useComponentExportOnlyModules": "off"
+                    }
+                }
+            }
+        },
+        {
+            "includes": [
+                "**/next.config.ts",
+                "**/tailwind.config.ts",
+                "**/postcss.config.mjs",
+                "**/knexfile.ts",
+                "apps/backend/src/config.ts",
+                "apps/backend/src/otel.ts",
+                "apps/backend/src/services/logger.ts",
+                "apps/frontend/src/utils/getBaseUrl.ts",
+                "apps/frontend/src/utils/getBackendUrl.ts",
+                "apps/frontend/src/instrumentation-client.ts"
+            ],
+            "linter": {
+                "rules": {
+                    "style": { "noProcessEnv": "off" }
+                }
+            }
+        },
+        {
+            "includes": ["**/tailwind.config.ts"],
+            "linter": {
+                "rules": {
+                    "style": {
+                        "useNamingConvention": "off"
+                    }
+                }
+            }
+        },
+        {
+            "includes": [
+                "apps/frontend/next-env.d.ts",
+                "apps/frontend/src/app/layout.tsx",
+                "apps/frontend/src/app/edit/page.tsx",
+                "apps/frontend/src/app/onboarding/page.tsx"
+            ],
+            "linter": {
+                "rules": {
+                    "correctness": {
+                        "noUnresolvedImports": "off"
+                    }
+                }
+            }
+        }
+    ]
+}

@@ -1,0 +1,5 @@
+# OBS browser sources: old cell URLs keep working after the backend moved domains.
+/api/cell/* https://api.sheet.stream/api/cell/:splat 301
+
+# Edit page moved from /edit/<id> to /edit?id=<id>.
+/edit/:id /edit?id=:id 301
