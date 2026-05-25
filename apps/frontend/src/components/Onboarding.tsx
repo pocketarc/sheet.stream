@@ -59,7 +59,7 @@ export function Onboarding({ token }: Props): JSX.Element {
 
     const networkErrorState: StoreStreamDetailsResultFailure = {
         type: "StoreStreamDetailsResultFailure",
-        errors: { token: ["Network error. Please try again."] },
+        errors: { general: ["Network error. Please try again."] },
     };
 
     const submitStreamDetails = async (): Promise<void> => {

@@ -47,7 +47,7 @@ export type Cell = {
 
 export type StoreStreamDetailsResultFailure = {
     type: "StoreStreamDetailsResultFailure";
-    errors: { streamUrl?: string[]; sheetsUrl?: string[]; token?: string[] };
+    errors: { general?: string[]; streamUrl?: string[]; sheetsUrl?: string[]; token?: string[] };
 };
 
 export type StoreStreamDetailsResultSuccess = {
