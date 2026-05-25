@@ -1,6 +1,5 @@
 import type {
     Credentials,
-    Spreadsheet,
     StoreStreamDetailsResultFailure,
     StoreStreamDetailsResultSuccess,
 } from "@sheet-stream/shared";
@@ -127,12 +126,13 @@ signupRoutes.post("/api/signup", async (c) => {
 
         const result = await sheets.spreadsheets.get({ spreadsheetId: sheetId });
 
-        await knex<Spreadsheet>("spreadsheets")
+        // MySQL JSON columns need a stringified value on INSERT; mysql2 parses it back on read.
+        await knex("spreadsheets")
             .insert({
                 id: sheetId,
                 name: result.data.properties?.title ?? "Unknown",
                 stream_url: parsedFormData.data.streamUrl,
-                token: credentials,
+                token: JSON.stringify(credentials),
             })
             .onConflict("id")
             .merge();
