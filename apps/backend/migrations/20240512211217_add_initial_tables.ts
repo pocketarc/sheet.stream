@@ -18,9 +18,9 @@ export async function up(knex: Knex): Promise<void> {
         // chars each they fit within InnoDB's 3072-byte index key limit.
         table.string("spreadsheet_id", 191).notNullable();
         table.foreign("spreadsheet_id").references("spreadsheets.id").onDelete("CASCADE");
-        table.string("sheet_id", 191);
-        table.string("sheet_name", 191);
-        table.string("cell", 191);
+        table.string("sheet_id", 191).notNullable();
+        table.string("sheet_name", 191).notNullable();
+        table.string("cell", 191).notNullable();
         table.json("css");
         table.text("value");
         table.timestamp("created_at", { precision: 3 }).defaultTo(knex.fn.now(3)).notNullable();
