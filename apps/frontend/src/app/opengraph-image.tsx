@@ -1,3 +1,5 @@
+import { readFile } from "node:fs/promises";
+import path from "node:path";
 import { ImageResponse } from "next/og";
 
 export const alt = "sheet.stream";
@@ -21,12 +23,8 @@ export default async function Image(): Promise<ImageResponse> {
     const subtitle =
         "Display data from a Google Sheet on your Twitch/YouTube/TikTok streams in real-time. Free, easy to setup, and customizable. 📊 🚀";
 
-    // I'm using the raw.githubusercontent.com URL because I'm not sure how else to get a URL to this image.
-    // This is statically-built, the live URL isn't available at build time. So how do I get a URL to the image?
-    // Looked up something involving import.meta.url, but that ends up with it complaining about the URL being invalid.
-    // If you know how to load a local image at build time, please let me know!
-    const image =
-        "https://raw.githubusercontent.com/pocketarc/sheet.stream/84b0931bf1c8fb08e1d778cb2b2561930ecd7406/public/sheet-stream.png";
+    const imageBuffer = await readFile(path.join(process.cwd(), "public/sheet-stream.png"));
+    const image = `data:image/png;base64,${imageBuffer.toString("base64")}`;
 
     return new ImageResponse(
         <div
