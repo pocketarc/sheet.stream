@@ -105,13 +105,33 @@ export function isStoreStreamDetailsResult(value: unknown): value is StoreStream
     if (typeof value !== "object" || value === null) {
         return false;
     }
-    const type = (value as { type?: unknown }).type;
-    return (
-        type === "StoreStreamDetailsResultFailure" ||
-        type === "StoreStreamDetailsResultSuccess" ||
-        type === "StoreCellResultFailure" ||
-        type === "StoreCellResultSuccess"
-    );
+    const candidate = value as {
+        type?: unknown;
+        id?: unknown;
+        sheets?: unknown;
+        errors?: unknown;
+    };
+    switch (candidate.type) {
+        case "StoreStreamDetailsResultSuccess":
+            return (
+                typeof candidate.id === "string" &&
+                Array.isArray(candidate.sheets) &&
+                candidate.sheets.every(
+                    (sheet) =>
+                        typeof sheet === "object" &&
+                        sheet !== null &&
+                        typeof (sheet as { id?: unknown }).id === "string" &&
+                        typeof (sheet as { name?: unknown }).name === "string",
+                )
+            );
+        case "StoreCellResultSuccess":
+            return typeof candidate.id === "string";
+        case "StoreStreamDetailsResultFailure":
+        case "StoreCellResultFailure":
+            return typeof candidate.errors === "object" && candidate.errors !== null;
+        default:
+            return false;
+    }
 }
 
 export function isCellEditResponse(value: unknown): value is CellEditResponse {
