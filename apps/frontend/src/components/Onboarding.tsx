@@ -23,6 +23,32 @@ type Props = {
     token: OAuthCredentials;
 };
 
+// Returns null when the response is non-2xx without a recognisable result body
+// or when the fetch itself fails — callers should surface a generic error in
+// either case.
+async function postJson(url: string, payload: object): Promise<StoreStreamDetailsResult | null> {
+    let result: Response;
+    try {
+        result = await fetch(url, { method: "POST", body: JSON.stringify(payload) });
+    } catch {
+        return null;
+    }
+
+    const body: unknown = await result.json().catch(() => null);
+
+    if (!result.ok) {
+        if (body !== null && typeof body === "object" && "type" in body) {
+            return body as StoreStreamDetailsResult;
+        }
+        return null;
+    }
+
+    if (body === null) {
+        return null;
+    }
+    return body as StoreStreamDetailsResult;
+}
+
 export function Onboarding({ token }: Props): JSX.Element {
     const router = useRouter();
     const streamUrlId = useId();
@@ -46,18 +72,8 @@ export function Onboarding({ token }: Props): JSX.Element {
     };
 
     const submitStreamDetails = async (): Promise<void> => {
-        let newState: StoreStreamDetailsResult;
-        try {
-            const result = await fetch(`${getBackendUrl()}/api/signup`, {
-                method: "POST",
-                body: JSON.stringify({
-                    token,
-                    streamUrl,
-                    sheetsUrl,
-                }),
-            });
-            newState = (await result.json()) as StoreStreamDetailsResult;
-        } catch {
+        const newState = await postJson(`${getBackendUrl()}/api/signup`, { token, streamUrl, sheetsUrl });
+        if (newState === null) {
             setState(networkErrorState);
             return;
         }
@@ -72,19 +88,13 @@ export function Onboarding({ token }: Props): JSX.Element {
     };
 
     const submitChosenCell = async (signupId: string): Promise<void> => {
-        let body: StoreStreamDetailsResult;
-        try {
-            const result = await fetch(`${getBackendUrl()}/api/signup/sheet`, {
-                method: "POST",
-                body: JSON.stringify({
-                    id: signupId,
-                    sheetId,
-                    sheetName,
-                    sheetCell,
-                }),
-            });
-            body = (await result.json()) as StoreStreamDetailsResult;
-        } catch {
+        const body = await postJson(`${getBackendUrl()}/api/signup/sheet`, {
+            id: signupId,
+            sheetId,
+            sheetName,
+            sheetCell,
+        });
+        if (body === null) {
             setState(networkErrorState);
             return;
         }
