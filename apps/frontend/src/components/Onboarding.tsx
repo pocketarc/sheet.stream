@@ -1,10 +1,10 @@
 "use client";
 
 import {
-    type Credentials,
     isStoreCellResultSuccess,
     isStoreStreamDetailsResultFailure,
     isStoreStreamDetailsResultSuccess,
+    type OAuthCredentials,
     type StoreStreamDetailsResult,
     type StoreStreamDetailsResultFailure,
 } from "@sheet-stream/shared";
@@ -20,7 +20,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { getBackendUrl } from "@/utils/getBackendUrl.ts";
 
 type Props = {
-    token: Credentials;
+    token: OAuthCredentials;
 };
 
 export function Onboarding({ token }: Props): JSX.Element {

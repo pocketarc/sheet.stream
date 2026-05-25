@@ -1,6 +1,6 @@
 "use client";
 
-import type { Credentials } from "@sheet-stream/shared";
+import type { OAuthCredentials } from "@sheet-stream/shared";
 import { useSearchParams } from "next/navigation";
 import type { JSX } from "react";
 import { Suspense } from "react";
@@ -16,9 +16,9 @@ function OnboardingPage(): JSX.Element {
 
     // The token is an opaque OAuth credentials blob produced by our backend's
     // redirect; the backend re-validates it with Zod when it's submitted.
-    let credentials: Credentials;
+    let credentials: OAuthCredentials;
     try {
-        credentials = JSON.parse(token) as Credentials;
+        credentials = JSON.parse(token) as OAuthCredentials;
     } catch {
         return <>Error: Invalid token.</>;
     }

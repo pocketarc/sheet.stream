@@ -12,8 +12,7 @@
         "typecheck": "tsc --noEmit"
     },
     "dependencies": {
-        "@types/react": "^19",
-        "google-auth-library": "^10"
+        "@types/react": "^19"
     },
     "devDependencies": {
         "typescript": "^6"

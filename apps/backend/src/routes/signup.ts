@@ -1,5 +1,5 @@
 import type {
-    Credentials,
+    OAuthCredentials,
     StoreStreamDetailsResultFailure,
     StoreStreamDetailsResultSuccess,
 } from "@sheet-stream/shared";
@@ -24,12 +24,11 @@ const tokenSchema = z.object({
     scope: z.string(),
 });
 
-// `id_token` is parsed as optional, so its value can be `undefined`. The
-// google-auth-library `Credentials` type uses `exactOptionalPropertyTypes`
-// semantics, where a present key must not hold `undefined`. Rebuild the object
-// so the key is simply omitted when no id token is present.
-function toCredentials(token: z.infer<typeof tokenSchema>): Credentials {
-    const credentials: Credentials = {
+// `id_token` is parsed as optional, so its value can be `undefined`. With
+// `exactOptionalPropertyTypes`, a present key must not hold `undefined`. Rebuild
+// the object so the key is simply omitted when no id token is present.
+function toCredentials(token: z.infer<typeof tokenSchema>): OAuthCredentials {
+    const credentials: OAuthCredentials = {
         refresh_token: token.refresh_token,
         expiry_date: token.expiry_date,
         access_token: token.access_token,

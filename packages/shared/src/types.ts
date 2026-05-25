@@ -1,13 +1,22 @@
-import type { Credentials } from "google-auth-library";
 import type { CSSProperties } from "react";
 
-export type { Credentials } from "google-auth-library";
+// Wire-format shape for the OAuth credentials we shuttle between the backend and
+// the frontend. Structurally compatible with google-auth-library's `Credentials`
+// so callers can hand it to `oauth2Client.setCredentials(...)` without conversion.
+export type OAuthCredentials = {
+    refresh_token?: string | null;
+    expiry_date?: number | null;
+    access_token?: string | null;
+    token_type?: string | null;
+    id_token?: string | null;
+    scope?: string;
+};
 
 export type Spreadsheet = {
     id: string;
     name: string;
     stream_url: string;
-    token: Credentials;
+    token: OAuthCredentials;
     created_at: Date;
     updated_at: Date;
     last_refreshed_at: Date | null;
