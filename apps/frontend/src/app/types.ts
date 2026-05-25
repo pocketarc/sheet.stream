@@ -1,8 +1,8 @@
-import type { StaticImport } from "next/dist/shared/lib/get-img-props";
+import type { StaticImageData } from "next/image";
 
 export type Streamer = {
     url: string;
-    thumbnail_url: StaticImport;
+    thumbnail_url: StaticImageData;
     title: string;
     description: string;
 };
