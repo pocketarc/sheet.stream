@@ -2,6 +2,7 @@
 
 import {
     isStoreCellResultSuccess,
+    isStoreStreamDetailsResult,
     isStoreStreamDetailsResultFailure,
     isStoreStreamDetailsResultSuccess,
     type OAuthCredentials,
@@ -36,17 +37,7 @@ async function postJson(url: string, payload: object): Promise<StoreStreamDetail
 
     const body: unknown = await result.json().catch(() => null);
 
-    if (!result.ok) {
-        if (body !== null && typeof body === "object" && "type" in body) {
-            return body as StoreStreamDetailsResult;
-        }
-        return null;
-    }
-
-    if (body === null) {
-        return null;
-    }
-    return body as StoreStreamDetailsResult;
+    return isStoreStreamDetailsResult(body) ? body : null;
 }
 
 export function Onboarding({ token }: Props): JSX.Element {

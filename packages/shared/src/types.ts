@@ -101,6 +101,19 @@ export function isStoreStreamDetailsResultFailure(
     return result.type === "StoreStreamDetailsResultFailure";
 }
 
+export function isStoreStreamDetailsResult(value: unknown): value is StoreStreamDetailsResult {
+    if (typeof value !== "object" || value === null) {
+        return false;
+    }
+    const type = (value as { type?: unknown }).type;
+    return (
+        type === "StoreStreamDetailsResultFailure" ||
+        type === "StoreStreamDetailsResultSuccess" ||
+        type === "StoreCellResultFailure" ||
+        type === "StoreCellResultSuccess"
+    );
+}
+
 export function isCellEditResponse(value: unknown): value is CellEditResponse {
     if (typeof value !== "object" || value === null) {
         return false;
