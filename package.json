@@ -16,7 +16,6 @@
         "typecheck": "bun run --cwd packages/shared typecheck && bun run --cwd apps/backend typecheck && bun run --cwd apps/frontend typecheck"
     },
     "trustedDependencies": [
-        "@sentry/cli",
         "esbuild",
         "protobufjs",
         "sharp",
