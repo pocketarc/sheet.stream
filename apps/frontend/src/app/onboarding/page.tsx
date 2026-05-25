@@ -16,7 +16,12 @@ function OnboardingPage(): JSX.Element {
 
     // The token is an opaque OAuth credentials blob produced by our backend's
     // redirect; the backend re-validates it with Zod when it's submitted.
-    const credentials = JSON.parse(token) as Credentials;
+    let credentials: Credentials;
+    try {
+        credentials = JSON.parse(token) as Credentials;
+    } catch {
+        return <>Error: Invalid token.</>;
+    }
 
     return <Onboarding token={credentials} />;
 }
