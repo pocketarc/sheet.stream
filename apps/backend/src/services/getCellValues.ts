@@ -13,7 +13,15 @@ function extractStringValue(values: sheets_v4.Schema$ValueRange["values"]): stri
     const firstRow: unknown = values?.[0];
     const firstCell: unknown = Array.isArray(firstRow) ? firstRow[0] : undefined;
 
-    return typeof firstCell === "string" ? firstCell : undefined;
+    if (typeof firstCell === "string") {
+        return firstCell;
+    }
+
+    if (typeof firstCell === "number") {
+        return String(firstCell);
+    }
+
+    return undefined;
 }
 
 function applyValueRanges(valueRanges: sheets_v4.Schema$ValueRange[], result: Map<string, string | null>): void {
